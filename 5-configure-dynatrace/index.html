@@ -1,0 +1,1413 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../4-deploy-dynatrace/">
+      
+      
+        <link rel="next" href="../6-analyze-logs/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>5. Configure Dynatrace - Dynatrace Enablement Lab: Log Ingest 101</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+  <!-- Add scripts that need to run before here -->
+  
+      
+    
+  <!-- Add scripts that need to run afterwards here -->
+   Create an agentless RUM application before GoLive
+   <!-- TODO: BeforeGoLive: Replace Agentless RUM Snippet
+    1. Create an agentless application in Dynatrace from with convention 'dynatrace-wwse/repositoryname'
+    2. https://hci34192.apps.dynatrace.com/ui/apps/dynatrace.classic.deploy.agentless/#install/agentless;gtf=-2h;gf=all
+    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/PLACEHOLDEr/REPLACE_WITH_YOUR_SNIPPET/1234abcd1234abcd_complete.js" crossorigin="anonymous"></script>
+    -->
+    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/145e12d594f/bf64904yne/6c910e7a6d2a6ab4_complete.js" crossorigin="anonymous"></script>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configure-dynatrace" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-header__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dynatrace Enablement Lab: Log Ingest 101
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5. Configure Dynatrace
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dynatrace-wwse/enablement-dynatrace-log-ingest-101" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    View Code on GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-nav__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dynatrace Enablement Lab: Log Ingest 101
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dynatrace-wwse/enablement-dynatrace-log-ingest-101" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    View Code on GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2-getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3-codespaces/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Codespaces
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4-deploy-dynatrace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Deploy Dynatrace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    5. Configure Dynatrace
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    5. Configure Dynatrace
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ingest-cronjob-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingest CronJob Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingest CronJob Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-ingest-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Ingest Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-module-feature-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Module Feature Flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-cronjob-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query CronJob Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-sensitive-data-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Sensitive Data Masking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Sensitive Data Masking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensitive-data-masking-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensitive Data Masking Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-cronjob-logs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query CronJob Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-timestampsplitting-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Timestamp/Splitting Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Timestamp/Splitting Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#timestamp-configuration-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timestamp Configuration Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingest-dynatrace-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingest Dynatrace Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingest Dynatrace Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-logs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-openpipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure OpenPipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure OpenPipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configure-custom-logs-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Custom Logs Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Custom Logs Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Extraction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metric-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metric Extraction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Route
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Continue
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6-analyze-logs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Analyze Logs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cleanup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Cleanup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ingest-cronjob-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingest CronJob Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingest CronJob Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-ingest-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Ingest Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-module-feature-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Module Feature Flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-cronjob-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query CronJob Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-sensitive-data-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Sensitive Data Masking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Sensitive Data Masking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensitive-data-masking-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensitive Data Masking Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-cronjob-logs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query CronJob Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-timestampsplitting-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Timestamp/Splitting Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Timestamp/Splitting Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#timestamp-configuration-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timestamp Configuration Rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingest-dynatrace-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingest Dynatrace Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingest Dynatrace Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-logs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-openpipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure OpenPipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure OpenPipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configure-custom-logs-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Custom Logs Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Custom Logs Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Extraction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metric-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metric Extraction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-route" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Route
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Continue
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="configure-dynatrace">Configure Dynatrace<a class="headerlink" href="#configure-dynatrace" title="Permanent link">#</a></h1>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  dynatrace.sendBizEvent('page_load', {"page": "5. Configure Dynatrace"})
+});
+</script>
+
+<p>You can configure log ingestion rules in Dynatrace to control which logs should be collected from your Kubernetes environment. The rules leverage Kubernetes metadata and other common log entry attributes to determine which logs are to be ingested. The standard log processing features from OneAgent, including sensitive data masking, timestamp configuration, log boundary definition, and automatic enrichment of log records, are also available for Kubernetes logs.</p>
+<div class="admonition tip">
+<p class="admonition-title">Dynatrace Automatic Log Ingest</p>
+<p>Dynatrace automatically discovers and analyzes new log files, including Kubernetes pod logs.  The out-of-the-box configuration will discover, parse, and ingest the logs from our <code>astroshop</code> application.  In order to exercise some of the advanced log monitoring configurations, we'll ingest sample CronJobs with logs that will need further configuration.</p>
+</div>
+<h2 id="ingest-cronjob-logs">Ingest CronJob Logs<a class="headerlink" href="#ingest-cronjob-logs" title="Permanent link">#</a></h2>
+<p>Dynatrace log ingest configuration allows you to remotely configure installed OneAgents to either include specific log sources for forwarding to Dynatrace or exclude them from upload. While log discovery refers to the automatic detection of log files so that no additional log source configuration effort is required on your environment, log ingestion involves the process of collecting logs and sending required log sources into Dynatrace.</p>
+<p>Log ingest configuration is based on rules that use matchers to target process groups, content, log levels, log paths, and other attributes described in this document. These rules determine which log files are ingested among those automatically detected by OneAgent or defined as custom log sources. </p>
+<p>Log ingest rules are ordered configurations processed from top to bottom. For higher configuration granularity, log ingest rules can be defined at four scopes: host, Kubernetes cluster, host group, and environment, with host scope rules having the highest priority.</p>
+<p><img alt="Rule Processing Priority" src="../img/configure-dynatrace_settings_rule_processing_priority.png" /></p>
+<h3 id="log-ingest-rule">Log Ingest Rule<a class="headerlink" href="#log-ingest-rule" title="Permanent link">#</a></h3>
+<p>In your Dynatrace tenant, open the (new) <code>Settings</code> app.  Select the <code>Collect and capture</code> submenu.  Click on the <code>Log monitoring</code> menu.  Click on <code>Log ingest rules</code> to open the setting in the <code>Settings Classic</code> app.</p>
+<p><img alt="Log Monitoring Settings" src="../img/configure-dynatrace_settings_collect_and_capture.png" /></p>
+<p>Here you will find the log ingest rules set at the environment-level.  Rules configured here will be inherited by every host group, Kubernetes cluster, and host in the environment.  However, these settings can be overridden at the granular entity-level.</p>
+<p>Click on <code>Hierarchy and overrides</code>.  Locate your Kubernetes cluster override for <code>enablement-log-ingest-101</code> and click on it.</p>
+<p><img alt="Log Monitoring Hierarchy and Overrides" src="../img/configure-dynatrace_settings_log_ingest_hierarchy.png" /></p>
+<p>Add a new rule that will capture logs from specific pods within the <code>cronjobs</code> namespace.  Click on <code>Add rule</code>.</p>
+<p><img alt="Add Rule" src="../img/configure-dynatrace_settings_log_ingest_cluster_rules.png" /></p>
+<p>Configure the rule with the following details:</p>
+<p>Rule Name:
+<div class="highlight"><pre><span></span><code>CronJob Logs
+</code></pre></div></p>
+<p>Rule Type:
+<div class="highlight"><pre><span></span><code>Include in storage
+</code></pre></div></p>
+<p>Conditions:</p>
+<p>Kubernetes namespace name is
+<div class="highlight"><pre><span></span><code>cronjobs
+</code></pre></div></p>
+<p>Kubernetes pod annotation is
+<div class="highlight"><pre><span></span><code>logs.dynatrace.io/ingest=true
+</code></pre></div></p>
+<p><img alt="Create Rule" src="../img/configure-dynatrace_settings_log_ingest_create_rule.png" /></p>
+<p>This rule will enable the Log Module to collect logs from pods that belong to the <code>cronjobs</code> namespace <strong>AND</strong> have the annotation <code>logs.dynatrace.io/ingest: true</code>.</p>
+<p>However, for this use case, configuring this rule alone will not start capturing these logs...</p>
+<h3 id="log-module-feature-flag">Log Module Feature Flag<a class="headerlink" href="#log-module-feature-flag" title="Permanent link">#</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Log Autodiscovery</p>
+<p>Logs will automatically be discovered by Dynatrace (OneAgent &amp; Log Module).  However, not all logs may be discovered by default.  A log file must meet all of the <a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-autodiscovery#autodiscoveryrequirements">autodiscovery requirements</a> to be autodiscovered!</p>
+</div>
+<p>An enhancement to the log module for Kubernetes introduces a feature that enables Dynatrace to capture all container logs, even those that do not meet the autodiscovery requirements.  The logs from the CronJobs are written by a container echoing a message to stdout.  This prevents them from meeting the autodiscovery requirements, thus we will need to enable the feature flag to collect all container logs.</p>
+<div class="grid cards">
+<ul>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-feature-flags">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+</ul>
+</div>
+<p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Log module feature flags</code>.  Enable the setting <code>Collect all container logs</code>.  Click on <code>Save changes</code>.</p>
+<p><img alt="Log Module Feature Flags" src="../img/configure-dynatrace_settings_log_module_feature_flags.png" /></p>
+<p>With this feature enabled and the log ingest rule configured, Dynatrace will now start to collect logs from the CronJob containers.</p>
+<h3 id="query-cronjob-logs">Query CronJob Logs<a class="headerlink" href="#query-cronjob-logs" title="Permanent link">#</a></h3>
+<p>Validate that the logs are now being ingested into Dynatrace.  Open the <code>Logs</code> app.  Filter the logs on the <code>cronjobs</code> namespace and click <code>Run query</code>.</p>
+<div class="highlight"><pre><span></span><code>k8s.namespace.name = cronjobs
+</code></pre></div>
+<p><img alt="CronJob Logs" src="../img/configure-dynatrace_logs_query_new_cronjob_logs.png" /></p>
+<h2 id="configure-sensitive-data-masking">Configure Sensitive Data Masking<a class="headerlink" href="#configure-sensitive-data-masking" title="Permanent link">#</a></h2>
+<p>Specific log messages may include user names, email addresses, URL parameters, and other information that you may not want to disclose. Log Monitoring features the ability to mask any information by modifying the configuration file on each OneAgent that handles information you consider to be sensitive.</p>
+<p>Masking is performed directly on OneAgent, ensuring that sensitive data are never ingested into the system.</p>
+<div class="grid cards">
+<ul>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-sensitive-data-masking">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+</ul>
+</div>
+<p>Within our CronJob logs, the <code>log-message-cronjob</code> writes out a message containing an email address.  While this email address isn't real, we can use it as an example of sensitive data masking.</p>
+<div class="highlight"><pre><span></span><code>$TIMESTAMP INFO Log message from cronjob.  email=example@dynatrace.io Ending job.
+</code></pre></div>
+<h3 id="sensitive-data-masking-rule">Sensitive Data Masking Rule<a class="headerlink" href="#sensitive-data-masking-rule" title="Permanent link">#</a></h3>
+<p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Sensitive data masking</code>.  Click on <code>Add rule</code>.</p>
+<p><img alt="Sensitive Data Masking Rules" src="../img/configure-dynatrace_settings_log_sensitive_data_masking.png" /></p>
+<p>Configure the rule with the following details:</p>
+<p>Rule Name:
+<div class="highlight"><pre><span></span><code>CronJob Email Address
+</code></pre></div></p>
+<p>Search Expression:
+<div class="highlight"><pre><span></span><code><span class="err">\</span><span class="nx">b</span><span class="p">[</span><span class="err">\</span><span class="nx">w</span><span class="err">\</span><span class="o">-</span><span class="err">\</span><span class="p">.</span><span class="nx">_</span><span class="p">]</span><span class="o">+?</span><span class="err">@</span><span class="p">[</span><span class="err">\</span><span class="nx">w</span><span class="err">\</span><span class="o">-</span><span class="err">\</span><span class="p">.</span><span class="nx">_</span><span class="p">]</span><span class="o">+?</span><span class="err">\</span><span class="p">.</span><span class="err">\</span><span class="nx">w</span><span class="p">{</span><span class="mf">2</span><span class="p">,</span><span class="mf">10</span><span class="p">}</span><span class="o">?</span><span class="err">\</span><span class="nx">b</span>
+</code></pre></div></p>
+<p>Masking Type:
+<div class="highlight"><pre><span></span><code>SHA-256
+</code></pre></div></p>
+<p>Conditions:</p>
+<p>Kubernetes namespace name is
+<div class="highlight"><pre><span></span><code>cronjobs
+</code></pre></div></p>
+<p><img alt="Sensitive Data Masking Rule" src="../img/configure-dynatrace_settings_log_sensitive_data_masking_rule.png" /></p>
+<p>The advantage of using the SHA-256 masking type is that every unique value (email address) will produce a unique hash value.  This may enable you to see if the log contains the same email address or different email addresses.  However, you will obviously not be able to decrypt what that email address is, keeping it secure!</p>
+<div class="admonition tip">
+<p class="admonition-title">Built-In Sensitive Data Masking</p>
+<p>Dynatrace includes built-in sensitive data masking rules for email address, credit cards, URL queries, IBAN, and API-Tokens at the Environment-level.  If these settings are enabled, that may have already caused the email address in the CronJob log to be masked.
+<img alt="Built In Masking" src="../img/configure-dynatrace_settings_log_sensitive_data_masking_builtin.png" /></p>
+</div>
+<h3 id="query-cronjob-logs_1">Query CronJob Logs<a class="headerlink" href="#query-cronjob-logs_1" title="Permanent link">#</a></h3>
+<p>The CronJob will execute every few minutes.  Allow some time for the job to run again and produce new log records.</p>
+<p>Return to the <code>Logs</code> app and filter on the logs that contain the email address.</p>
+<div class="highlight"><pre><span></span><code>k8s.namespace.name = cronjobs k8s.deployment.name = log-message-cronjob-* content = &quot;*email*&quot;
+</code></pre></div>
+<p><img alt="Email Masked" src="../img/configure-dynatrace_logs_query_email_logs.png" /></p>
+<p>The logs now contain the hashed value of the email address, <code>03cb5558c834be3796387a17763f315f22d3ab87cd1dc6d5d4817f8d27ec5913</code>.</p>
+<h2 id="configure-timestampsplitting-patterns">Configure Timestamp/Splitting Patterns<a class="headerlink" href="#configure-timestampsplitting-patterns" title="Permanent link">#</a></h2>
+<p>By default, log monitoring automatically detects only the most common and unambiguous subset of date formats supported. Each time a timestamp pattern is detected, the line will be treated as the beginning of the log entry. All following lines without a detected timestamp will be treated as a continuation and reported as a single multi-line log record.</p>
+<p>In the event that a multi-line log record contains another supported timestamp, it is likely that Dynatrace will treat that line as a new log record.  If this is not the desired result, a timestamp configuration rule can be created to change this behavior.</p>
+<div class="grid cards">
+<ul>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-timestamp-configuration">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+</ul>
+</div>
+<p>In our CronJob logs, the <code>timestamp-cronjob</code> writes a multi-line log record that contains multiple timestamps.  Dynatrace treats the extra timestamps as new log lines.  We want this log record to be treated as a single record.</p>
+<p><img alt="Three Log Records" src="../img/configure-dynatrace_logs_query_3_timestamp_logs.png" /></p>
+<h3 id="timestamp-configuration-rule">Timestamp Configuration Rule<a class="headerlink" href="#timestamp-configuration-rule" title="Permanent link">#</a></h3>
+<p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Timestamp/Splitting patterns</code>.  Click on <code>Add rule</code>.</p>
+<p><img alt="Timestamp Pattern Rules" src="../img/configure-dynatrace_settings_log_timestamp_patterns.png" /></p>
+<p>Configure the rule with the following details:</p>
+<p>Rule Name:
+<div class="highlight"><pre><span></span><code>Timestamp CronJob
+</code></pre></div></p>
+<p>Search Expression:
+<div class="highlight"><pre><span></span><code><span class="o">%^%</span><span class="nx">FT</span><span class="o">%</span><span class="nx">T</span><span class="o">%</span><span class="nx">z</span>
+</code></pre></div></p>
+<p>Conditions:</p>
+<p>Kubernetes namespace name is
+<div class="highlight"><pre><span></span><code>cronjobs
+</code></pre></div></p>
+<p><img alt="Timestamp Pattern Rule" src="../img/configure-dynatrace_settings_log_timestamp_patterns_rule.png" /></p>
+<p>Here is a breakdown of our pattern:</p>
+<table>
+<thead>
+<tr>
+<th>Entry</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%^</td>
+<td>Matches timestamp patterns only at the start of a log line</td>
+</tr>
+<tr>
+<td>%F</td>
+<td>Shortcut for %Y-%m-%d, 2025-11-30 for example</td>
+</tr>
+<tr>
+<td>T</td>
+<td>The literal character 'T' as found in the ISO 8601  format</td>
+</tr>
+<tr>
+<td>%T</td>
+<td>Shortcut for %H-%M-%S, 12:30:01 for example</td>
+</tr>
+<tr>
+<td>%z</td>
+<td>Timezone indicator as found in the ISO 8601 format</td>
+</tr>
+</tbody>
+</table>
+<p>This rule will cause Dynatrace to stop splitting log records on new lines with timestamps, since they don't appear at the beginning of the log record.</p>
+<h3 id="query-logs">Query Logs<a class="headerlink" href="#query-logs" title="Permanent link">#</a></h3>
+<p>The CronJob will execute every few minutes.  Allow some time for the job to run again and produce new log records.</p>
+<p>Return to the <code>Logs</code> app and filter on the logs that contain the multiple timestamps.</p>
+<div class="highlight"><pre><span></span><code>k8s.namespace.name = cronjobs content != &quot;*injection-startup*&quot; k8s.workload.name=&quot;timestamp-cronjob&quot;
+</code></pre></div>
+<p><img alt="Single Log Record" src="../img/configure-dynatrace_logs_query_timestamp_logs.png" /></p>
+<p>Each log message is now treated as a single, multi-line, log record containing the entire message.</p>
+<h2 id="ingest-dynatrace-logs">Ingest Dynatrace Logs<a class="headerlink" href="#ingest-dynatrace-logs" title="Permanent link">#</a></h2>
+<p>In some cases, you may want to collect container logs from the Dynatrace components running in the <code>dynatrace</code> namespace.  By default, collection of these logs is disabled, even if you have a log ingest rule configured to do so.  Logs collected from the Dynatrace components are treated like any other log that you ingest - it consumes licensing, storage, etc.</p>
+<p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Advanced log settings</code>.  Enable the setting <code>Allow OneAgent to monitor Dynatrace logs</code>.  Click on <code>Save changes</code>.</p>
+<p><img alt="Allow Dynatrace Logs" src="../img/configure-dynatrace_settings_log_allow_dynatrace.png" /></p>
+<p>This allows the Log Module to discover the Dynatrace component logs.  However, we need to add an ingest rule to ship them to Dynatrace.</p>
+<p>In the Log Monitoring section, click on <code>Log ingest rules</code>.  Modify your existing rule called <code>enablement-log-ingest-101</code> and add the <code>dynatrace</code> namespace to the matcher.  Save your changes.</p>
+<p><img alt="Ingest Dynatrace Namespace Logs" src="../img/configure-dynatrace_settings_log_ingest_rule_add_dynatrace.png" /></p>
+<h3 id="query-logs_1">Query Logs<a class="headerlink" href="#query-logs_1" title="Permanent link">#</a></h3>
+<p>Return to the <code>Logs</code> app and filter on the logs from the <code>dynatrace</code> namespace.</p>
+<div class="highlight"><pre><span></span><code>k8s.namespace.name = dynatrace
+</code></pre></div>
+<p><img alt="Dynatrace Logs" src="../img/configure-dynatrace_logs_query_dynatrace_logs.png" /></p>
+<p>These logs can help with troubleshooting any observability issues on the Kubernetes cluster.  However, it is the Log Module that is collecting these logs, so if the Log Module is not working - the logs won't be shipped to Dynatrace!</p>
+<h2 id="configure-openpipeline">Configure OpenPipeline<a class="headerlink" href="#configure-openpipeline" title="Permanent link">#</a></h2>
+<p>OpenPipeline is the Dynatrace data handling solution to seamlessly ingest and process data from different sources, at any scale, and in any format in the Dynatrace Platform.</p>
+<p>Dynatrace OpenPipeline can reshape incoming data for better understanding, processing, and analysis. OpenPipeline processing is based on rules that you create and offers a flexible way of extracting value from raw records.</p>
+<p><img alt="OpenPipeline" src="../img/configure-dynatrace_openpipeline_architecture.png" /></p>
+<div class="grid cards">
+<ul>
+<li><a href="https://docs.dynatrace.com/docs/discover-dynatrace/platform/openpipeline">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+</ul>
+</div>
+<p>The logs written by the <code>paymentservice</code> within the <code>astroshop</code> application are missing some important context information, making them a great candidate for ingest processing with OpenPipeline.</p>
+<p>Sample log snippet:
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="mi">1744936198898</span><span class="p">,</span><span class="nt">&quot;pid&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.host&quot;</span><span class="p">:</span><span class="s2">&quot;HOST-815866271C8841E1&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.kubernetes_cluster&quot;</span><span class="p">:</span><span class="s2">&quot;KUBERNETES_CLUSTER-FD9401B313C80ED9&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.process_group&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP-F8DE358ACD7BA713&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.process_group_instance&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP_INSTANCE-BE5376E9380A3175&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.cluster.id&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.cluster.name&quot;</span><span class="p">:</span><span class="s2">&quot;enablement-log-ingest-101&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.cluster.uid&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.container.name&quot;</span><span class="p">:</span><span class="s2">&quot;paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.namespace.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.node.name&quot;</span><span class="p">:</span><span class="s2">&quot;kind-control-plane&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.pod.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.pod.uid&quot;</span><span class="p">:</span><span class="s2">&quot;8992e584-dc50-48f9-b243-1facae6d1ba5&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;process.technology&quot;</span><span class="p">:</span><span class="s2">&quot;nodejs&quot;</span><span class="p">,</span><span class="nt">&quot;dt.trace_id&quot;</span><span class="p">:</span><span class="s2">&quot;6977c25e6f6a6b4fcc0117087990d95b&quot;</span><span class="p">,</span><span class="nt">&quot;dt.span_id&quot;</span><span class="p">:</span><span class="s2">&quot;54f824774f71e56c&quot;</span><span class="p">,</span><span class="nt">&quot;dt.trace_sampled&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="nt">&quot;transactionId&quot;</span><span class="p">:</span><span class="s2">&quot;f762bcae-fdb7-4f55-9576-a99273683d12&quot;</span><span class="p">,</span><span class="nt">&quot;cardType&quot;</span><span class="p">:</span><span class="s2">&quot;visa&quot;</span><span class="p">,</span><span class="nt">&quot;lastFourDigits&quot;</span><span class="p">:</span><span class="s2">&quot;1278&quot;</span><span class="p">,</span><span class="nt">&quot;amount&quot;</span><span class="p">:{</span><span class="nt">&quot;units&quot;</span><span class="p">:{</span><span class="nt">&quot;low&quot;</span><span class="p">:</span><span class="mi">1173</span><span class="p">,</span><span class="nt">&quot;high&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&quot;unsigned&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">},</span><span class="nt">&quot;nanos&quot;</span><span class="p">:</span><span class="mi">999999999</span><span class="p">,</span><span class="nt">&quot;currencyCode&quot;</span><span class="p">:</span><span class="s2">&quot;USD&quot;</span><span class="p">},</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Transaction complete.&quot;</span><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="configure-custom-logs-pipeline">Configure Custom Logs Pipeline<a class="headerlink" href="#configure-custom-logs-pipeline" title="Permanent link">#</a></h3>
+<p>In your Dynatrace tenant, open the <code>OpenPipeline</code> app.  Select <code>Logs</code> and click on the <code>Pipelines</code> tab.  Add a new Pipeline by clicking on <code>+ Pipeline</code>.</p>
+<p><img alt="OpenPipeline Logs Pipelines" src="../img/configure-dynatrace_opp_logs_pipelines.png" /></p>
+<p>Give the new pipeline a name, <code>AstroShop PaymentService</code>.  Click on the <code>Processing</code> tab to create processing rules.</p>
+<p><img alt="Name Your Pipeline" src="../img/configure-dynatrace_opp_name_pipeline.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Save Your Configuration</p>
+<p>It is highly recommended to save your progress often by clicking the <code>Save</code> button and then re-opening your pipeline configuration to avoid losing your changes!</p>
+</div>
+<h4 id="processing-rules">Processing Rules<a class="headerlink" href="#processing-rules" title="Permanent link">#</a></h4>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>NodeJS
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>Technology Bundle: NodeJS
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>Pre-defined: matchesValue(process.technology, &quot;Node.js&quot;) or matchesValue(process.technology, &quot;nodejs&quot;)
+</code></pre></div></p>
+<p>This processor rule will apply built-in pattern detection for known NodeJS technology log frameworks to parse and enrich the log content.  In our example, this will be important to extract the numeric <code>loglevel</code> into a recognizable string value; such as "INFO" or "WARN".</p>
+<p><img alt="NodeJS Processor" src="../img/configure-dynatrace_opp_nodejs.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>Parse Content
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>DQL
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message)
+</code></pre></div></p>
+<p>DQL processor definition:
+<div class="highlight"><pre><span></span><code>parse content, &quot;JSON:json_content&quot;
+| fieldsAdd content = json_content
+| fieldsFlatten content, depth: 3
+</code></pre></div></p>
+<p>This processor rule will parse the JSON structured <code>content</code> field and flatten the object into new fields.  This will make accessing the details in the content field much easier.</p>
+<p><img alt="Parse Content Processor" src="../img/configure-dynatrace_opp_parse_content.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>Message to Content
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>DQL
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message) and isNotNull(json_content)
+</code></pre></div></p>
+<p>DQL processor definition:
+<div class="highlight"><pre><span></span><code>fieldsRemove content
+| fieldsAdd content = message
+</code></pre></div></p>
+<p>This processor rule will replace the <code>content</code> field value with the <code>message</code> field value.  The JSON object in the content field is excessive and contains a ton of information that isn't relative to the field itself.  The same information already exists on the log, outside of the content field.</p>
+<p><img alt="Message to Content Processor" src="../img/configure-dynatrace_opp_message_to_content.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>Transaction Fields
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>DQL
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>matchesValue(content,&quot;Transaction complete.&quot;) and isNotNull(content.amount.units.low) and isNotNull(content.transactionId)
+</code></pre></div></p>
+<p>DQL processor definition:
+<div class="highlight"><pre><span></span><code>fieldsAdd payment.amount = content.amount.units.low
+| fieldsAdd payment.transactionid = content.transactionId
+| fieldsAdd payment.currencycode = content.amount.currencyCode
+| fieldsAdd payment.cardtype = content.cardType
+| fieldsAdd payment.lastfourdigits = content.lastFourDigits
+</code></pre></div></p>
+<p>This processor rule will simplify the field names for extracting business information.  When the service successfully processes a payment transaction, a log record is written with the payment information.  We want this information extracted for business observability use cases.</p>
+<p><img alt="Transaction Fields Processor" src="../img/configure-dynatrace_opp_transaction_fields.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>Cleanup Fields
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>DQL
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message) and isNotNull(json_content) and isNotNull(content)
+</code></pre></div></p>
+<p>DQL processor definition:
+<div class="highlight"><pre><span></span><code>fieldsRemove &quot;content.dt.*&quot;, &quot;content.k8s.*&quot;, &quot;content.time&quot;,&quot;content.level&quot;, &quot;content.process.technology&quot;, &quot;content.hostname&quot;, &quot;content.pid&quot;
+| fieldsRemove &quot;content.request.creditCard.*&quot;
+| fieldsRemove json_content
+</code></pre></div></p>
+<p>This processor rule will cleanup (remove) fields that are no longer needed.  Parsing the <code>content</code> field resulted in many unwanted fields prefixed with <code>content.*</code>.  Additionally, the payment request log records contain sensitive credit card data (spoofed of course).  This processor will remove those fields with sensitive data.  This is an example of masking or deleting sensitive data at ingest using OpenPipeline.</p>
+<p><img alt="Cleanup Fields Processor" src="../img/configure-dynatrace_opp_cleanup_fields.png" /></p>
+<h4 id="data-extraction">Data Extraction<a class="headerlink" href="#data-extraction" title="Permanent link">#</a></h4>
+<p>Click on the <code>Data extraction</code> tab to create data extraction rules.</p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>PaymentService Transaction
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>Business Event
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>matchesValue(content,&quot;Transaction complete.&quot;) and isNotNull(payment.amount) and isNotNull(payment.transactionid)
+</code></pre></div></p>
+<p>Event type:
+<div class="highlight"><pre><span></span><code>astroshop.paymentservice.transaction.complete
+</code></pre></div></p>
+<p>Event provider:
+<div class="highlight"><pre><span></span><code>astroshop
+</code></pre></div></p>
+<p>Field extraction:
+<div class="highlight"><pre><span></span><code>Extract all fields
+</code></pre></div></p>
+<p>This data extraction rule will generate a business event (bizevent) anytime the payment service successfully completes a payment transaction, as identified by the matching log message.  This new business event can then be used for business analytics and business observability use cases.</p>
+<p><img alt="BizEvent Processor" src="../img/configure-dynatrace_opp_transaction_bizevent.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>PaymentService Fail Feature Flag Enabled
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>Davis Event
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>matchesValue(status,&quot;WARN&quot;) and matchesValue(message,&quot;PaymentService Fail Feature Flag Enabled&quot;) and isNotNull(dt.entity.cloud_application)
+</code></pre></div></p>
+<p>Event name:
+<div class="highlight"><pre><span></span><code>PaymentService Fail Feature Flag Enabled
+</code></pre></div></p>
+<p>Event description:
+<div class="highlight"><pre><span></span><code>Generate an error when calling the charge method.
+</code></pre></div></p>
+<p>Event properties:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>event.type</td>
+<td>ERROR_EVENT</td>
+</tr>
+<tr>
+<td>event.name</td>
+<td>PaymentService Fail Feature Flag Enabled</td>
+</tr>
+<tr>
+<td>event.description</td>
+<td>Generate an error when calling the charge method.</td>
+</tr>
+<tr>
+<td>dt.davis.is_rootcause_relevant</td>
+<td>true</td>
+</tr>
+<tr>
+<td>dt.davis.is_merging_allowed</td>
+<td>true</td>
+</tr>
+<tr>
+<td>dt.source_entity</td>
+<td>{dt.entity.cloud_application}</td>
+</tr>
+</tbody>
+</table>
+<p>This data extraction rule will generate a Davis event (alert) anytime the payment service fails to process a payment transaction due to the problem pattern (feature flag) being enabled.  This is an example of using OpenPipeline to alert on log data at ingest.</p>
+<p><img alt="Davis Event Processor" src="../img/configure-dynatrace_opp_fail_davis_event.png" /></p>
+<h4 id="metric-extraction">Metric Extraction<a class="headerlink" href="#metric-extraction" title="Permanent link">#</a></h4>
+<p>Click on the <code>Metric extraction</code> tab to create metric extraction rules.</p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>PaymentService Failure
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>Counter metric
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>matchesValue(status,&quot;WARN&quot;) and matchesValue(message,&quot;PaymentService Fail Feature Flag Enabled&quot;) and isNotNull(dt.entity.cloud_application)
+</code></pre></div></p>
+<p>Metric key:
+<div class="highlight"><pre><span></span><code>astroshop.paymentservice.failure
+</code></pre></div>
+<em>log.astroshop.paymentservice.failure</em></p>
+<p>Dimensions:</p>
+<table>
+<thead>
+<tr>
+<th>Pre-defined fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dt.entity.cloud_application</td>
+</tr>
+<tr>
+<td>dt.entity.process_group</td>
+</tr>
+<tr>
+<td>k8s.namespace.name</td>
+</tr>
+<tr>
+<td>k8s.workload.name</td>
+</tr>
+</tbody>
+</table>
+<p>This metric extraction rule will create a counter metric to count the number of payment service failures caused by the feature flag being enabled.  Using DQL, one could count the number of log messages, summarize or make a timeseries of that data on the fly.  However, in order to optimize query costs and reduce raw log query volume, converting specific log data to metrics is a best practice for a use case such as this.</p>
+<p><img alt="Metric Processor" src="../img/configure-dynatrace_opp_transaction_metric.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Permission and Storage Processors</p>
+<p>OpenPipeline can also be used to set the security context of the log data to manage permissions to specific logs.  Additionally, you can use storage processor rules to store specific log data in a bucket that is configured for a desired retention time.  For this lab, we will not create permission or storage processor rules.</p>
+</div>
+<p>Click on <code>Save</code> to finish and save your new pipeline.</p>
+<h4 id="dynamic-route">Dynamic Route<a class="headerlink" href="#dynamic-route" title="Permanent link">#</a></h4>
+<p>A pipeline will not have any effect unless logs are configured to be routed to the pipeline. With dynamic routing, data is routed based on a matching condition. The matching condition is a DQL query that defines the data set you want to route.</p>
+<p>Click on <code>Dynamic Routing</code> to configure a route to the target pipeline. Click on <code>+ Dynamic Route</code> to add a new route.</p>
+<p><img alt="Dynamic Routes" src="../img/configure-dynatrace_opp_logs_routes.png" /></p>
+<p>Configure the <code>Dynamic Route</code> to use the <code>AstroShop PaymentService</code> pipeline.</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>AstroShop PaymentService
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>matchesValue(k8s.namespace.name,&quot;astroshop&quot;) and matchesValue(k8s.container.name,&quot;paymentservice&quot;) and matchesValue(status,&quot;NONE&quot;)
+</code></pre></div></p>
+<p>Pipeline:
+<div class="highlight"><pre><span></span><code>AstroShop PaymentService
+</code></pre></div></p>
+<p>Click <code>Save</code> to add your new route.</p>
+<p><img alt="Add Route" src="../img/configure-dynatrace_opp_add_route.png" /></p>
+<p>Validate that the route is enabled in the <code>Status</code> column. Click on <code>Save</code> to save the dynamic route table configuration.</p>
+<p><img alt="Save Routes" src="../img/configure-dynatrace_opp_save_routes.png" /></p>
+<p>Allow the <code>paymentservice</code> from <code>astroshop</code> to generate new log data that will be routed through the new pipeline (3-5 minutes).</p>
+<h3 id="query-logs_2">Query Logs<a class="headerlink" href="#query-logs_2" title="Permanent link">#</a></h3>
+<p>Return to the <code>Logs</code> app and filter on the logs generated by the payment service.</p>
+<div class="highlight"><pre><span></span><code>k8s.namespace.name = &quot;astroshop&quot; k8s.container.name = &quot;paymentservice&quot; 
+</code></pre></div>
+<p><img alt="PaymentService Logs" src="../img/configure-dynatrace_opp_query_new_logs.png" /></p>
+<h2 id="continue">Continue<a class="headerlink" href="#continue" title="Permanent link">#</a></h2>
+<p>In the next section, we'll query, view, and analyze logs ingested into Dynatrace.</p>
+<div class="grid cards">
+<ul>
+<li><a href="../6-analyze-logs/">Continue to analyzing logs in Dynatrace<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

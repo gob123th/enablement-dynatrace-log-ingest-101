@@ -674,13 +674,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Dynatrace provides a flexible approach to Kubernetes observability where you can pick and choose the level of observability you need for your Kubernetes clusters. The Dynatrace Operator manages all the components needed to get the data into Dynatrace for you. This also applies to collecting logs from Kubernetes containers. Depending on the selected observability option, the Dynatrace Operator configures and manages the Log module to work in conjunction with or without a OneAgent on the node.</p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/deployment/k8s-log-monitoring">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/deployment/k8s-log-monitoring" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <h2 id="kubernetes-platform-monitoring-application-observability">Kubernetes Platform Monitoring + Application Observability<a class="headerlink" href="#kubernetes-platform-monitoring-application-observability" title="Permanent link">#</a></h2>
 <p>Kubernetes platform monitoring sets the foundation for understanding and troubleshooting your Kubernetes clusters. This setup does not include OneAgent or application-level monitoring by default, but it can be combined with other monitoring and injection approaches.</p>
 <div class="admonition tip">
-<p class="admonition-title"><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/kubernetes-monitoring">Kubernetes Platform Monitoring</a>: Capabilities</p>
+<p class="admonition-title"><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/kubernetes-monitoring" target="_blank">Kubernetes Platform Monitoring</a>: Capabilities</p>
 <ul>
 <li>Provides insights into the health and utilization of your Kubernetes clusters, including object relationships (topology)</li>
 <li>Uses the Kubernetes API and cAdvisor to get node- and container-level metrics and Kubernetes events</li>
@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p>Application observability focuses on monitoring application-level metrics by injecting code modules into application Pods. This mode offers multiple injection strategies (automatic, runtime, and build-time) to collect application-specific metrics. For infrastructure-level insights, combine it with Kubernetes platform monitoring.</p>
 <div class="admonition tip">
-<p class="admonition-title"><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/application-monitoring">Application Observability</a>: Capabilities</p>
+<p class="admonition-title"><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/application-monitoring" target="_blank">Application Observability</a>: Capabilities</p>
 <ul>
 <li>Dynatrace injects code modules into Pods using the Kubernetes admission controller.</li>
 <li>Get granular control over the instrumented Pods using namespaces and annotations.</li>
@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">ImagePullBackOff Error</p>
-<p>In case you encounter an <strong>ImagePullBackOff</strong> error, check <code>public.ecr.aws</code> to make sure the container image with that tag exists.  If not, change the value to use an existing one.
+<p>In case you encounter an <strong>ImagePullBackOff</strong> error, check <a href="https://gallery.ecr.aws/dynatrace/dynatrace-logmodule" target="_blank">public.ecr.aws</a> to make sure the container image with that tag exists.  If not, change the value to use an existing one.
 <img alt="Container Registry" src="../img/deploy-dynatrace_log_module_container_registry.png" /></p>
 </div>
 <p>Enabling the option <strong>Restrict Log monitoring to certain resources</strong> option will add <code>spec.logMonitoring.ingestRuleMatchers</code> to the Dynakube definition.</p>
@@ -853,10 +853,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Log ingest for the Log Module is controlled by the Dynatrace tenant, not the local Dynakube configuration!  This configuration is a quality of life feature that is to be used during the initial deployment of Dynatrace on Kubernetes.</p>
 </div>
 <p>By enabling the Log Module in your <code>dynakube.yaml</code> definition, this will enable the Dynakube to add a Log Ingest rule scoped at the Cluster-level within the Dynatrace tenant.</p>
-<p>As of Dynatrace Operator version <code>1.4.2</code> and Dynatrace version <code>1.311</code>, the Log Ingest rule is added upon deployment and creation of the Kubernetes Cluster setting, but any further changes within the Dynakube's configuration will not update the setting.  Manage Log Ingest rules within the Dynatrace tenant.  If you seek to automate this process at the Kubernetes Cluster-level, consider deploying <a href="https://docs.dynatrace.com/docs/deliver/configuration-as-code/monaco">Dynatrace Configuration As Code</a> to <a href="https://docs.dynatrace.com/docs/deliver/configuration-as-code/monaco/reference/supported-configuration#settings">manage the setting</a>.</p>
+<p>As of Dynatrace Operator version <code>1.4.2</code> and Dynatrace version <code>1.311</code>, the Log Ingest rule is added upon deployment and creation of the Kubernetes Cluster setting, but any further changes within the Dynakube's configuration will not update the setting.  Manage Log Ingest rules within the Dynatrace tenant.  If you seek to automate this process at the Kubernetes Cluster-level, consider deploying <a href="https://docs.dynatrace.com/docs/deliver/configuration-as-code/monaco" target="_blank">Dynatrace Configuration As Code</a> to <a href="https://docs.dynatrace.com/docs/deliver/configuration-as-code/monaco/reference/supported-configuration#settings" target="_blank">manage the setting</a>.</p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-logs-from-kubernetes">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-logs-from-kubernetes" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <h3 id="configure-log-ingest">Configure Log Ingest<a class="headerlink" href="#configure-log-ingest" title="Permanent link">#</a></h3>

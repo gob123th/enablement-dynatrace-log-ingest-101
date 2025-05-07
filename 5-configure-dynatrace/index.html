@@ -966,12 +966,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <h3 id="log-module-feature-flag">Log Module Feature Flag<a class="headerlink" href="#log-module-feature-flag" title="Permanent link">#</a></h3>
 <div class="admonition tip">
 <p class="admonition-title">Log Autodiscovery</p>
-<p>Logs will automatically be discovered by Dynatrace (OneAgent &amp; Log Module).  However, not all logs may be discovered by default.  A log file must meet all of the <a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-autodiscovery#autodiscoveryrequirements">autodiscovery requirements</a> to be autodiscovered!</p>
+<p>Logs will automatically be discovered by Dynatrace (OneAgent &amp; Log Module).  However, not all logs may be discovered by default.  A log file must meet all of the <a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-autodiscovery#autodiscoveryrequirements" target="_blank">autodiscovery requirements</a> to be autodiscovered!</p>
 </div>
 <p>An enhancement to the log module for Kubernetes introduces a feature that enables Dynatrace to capture all container logs, even those that do not meet the autodiscovery requirements.  The logs from the CronJobs are written by a container echoing a message to stdout.  This prevents them from meeting the autodiscovery requirements, thus we will need to enable the feature flag to collect all container logs.</p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-feature-flags">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-feature-flags" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Log module feature flags</code>.  Enable the setting <code>Collect all container logs</code>.  Click on <code>Save changes</code>.</p>
@@ -987,7 +987,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Masking is performed directly on OneAgent, ensuring that sensitive data are never ingested into the system.</p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-sensitive-data-masking">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-sensitive-data-masking" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <p>Within our CronJob logs, the <code>log-message-cronjob</code> writes out a message containing an email address.  While this email address isn't real, we can use it as an example of sensitive data masking.</p>
@@ -1029,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>In the event that a multi-line log record contains another supported timestamp, it is likely that Dynatrace will treat that line as a new log record.  If this is not the desired result, a timestamp configuration rule can be created to change this behavior.</p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-timestamp-configuration">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/analyze-explore-automate/logs/lma-log-ingestion/lma-log-ingestion-via-oa/lma-timestamp-configuration" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <p>In our CronJob logs, the <code>timestamp-cronjob</code> writes a multi-line log record that contains multiple timestamps.  Dynatrace treats the extra timestamps as new log lines.  We want this log record to be treated as a single record.</p>
@@ -1107,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p><img alt="OpenPipeline" src="../img/configure-dynatrace_openpipeline_architecture.png" /></p>
 <div class="grid cards">
 <ul>
-<li><a href="https://docs.dynatrace.com/docs/discover-dynatrace/platform/openpipeline">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
+<li><a href="https://docs.dynatrace.com/docs/discover-dynatrace/platform/openpipeline" target="_blank">Learn More<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
 </ul>
 </div>
 <p>The logs written by the <code>paymentservice</code> within the <code>astroshop</code> application are missing some important context information, making them a great candidate for ingest processing with OpenPipeline.</p>
@@ -1188,6 +1188,22 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre></div></p>
 <p>This processor rule will simplify the field names for extracting business information.  When the service successfully processes a payment transaction, a log record is written with the payment information.  We want this information extracted for business observability use cases.</p>
 <p><img alt="Transaction Fields Processor" src="../img/configure-dynatrace_opp_transaction_fields.png" /></p>
+<p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
+<p>Name:
+<div class="highlight"><pre><span></span><code>Mask Sensitive Data
+</code></pre></div></p>
+<p>Type:
+<div class="highlight"><pre><span></span><code>DQL
+</code></pre></div></p>
+<p>Matching condition:
+<div class="highlight"><pre><span></span><code>isNotNull(content.request.creditCard.creditCardNumber)
+</code></pre></div></p>
+<p>DQL processor definition:
+<div class="highlight"><pre><span></span><code>fieldsAdd maskedcreditcardnumber = hashMd5(content.request.creditCard.creditCardNumber)
+| fieldsRemove content.request.creditCard.creditCardNumber
+</code></pre></div></p>
+<p>This processor rule will create a new field containing the MD5 hash value of the credit card number.  This is an example of masking sensitive data at ingest using OpenPipeline.</p>
+<p><img alt="Mask Sensitive Data Processor" src="../img/configure-dynatrace_opp_mask_sensitive.png" /></p>
 <p>Add a new processor rule by clicking on <code>+ Processor</code>.  Configure the processor rule with the following:</p>
 <p>Name:
 <div class="highlight"><pre><span></span><code>Cleanup Fields

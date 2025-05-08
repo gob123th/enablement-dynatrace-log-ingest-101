@@ -38,14 +38,11 @@
   
       
     
-  <!-- Add scripts that need to run afterwards here -->
-   Create an agentless RUM application before GoLive
-   <!-- TODO: BeforeGoLive: Replace Agentless RUM Snippet
-    1. Create an agentless application in Dynatrace from with convention 'dynatrace-wwse/repositoryname'
-    2. https://hci34192.apps.dynatrace.com/ui/apps/dynatrace.classic.deploy.agentless/#install/agentless;gtf=-2h;gf=all
-    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/PLACEHOLDEr/REPLACE_WITH_YOUR_SNIPPET/1234abcd1234abcd_complete.js" crossorigin="anonymous"></script>
+  <!-- Add scripts that need to run afterwards here
+    Webapp name  dynatrace-wwse/enablement-dynatrace-log-ingest-101
+    https://hci34192.apps.dynatrace.com/ui/apps/dynatrace.classic.frontend/#uemapplications/uemappmetrics;uemapplicationId=APPLICATION-D20E1302FE279C03;gtf=-2h;gf=all
     -->
-    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/145e12d594f/bf64904yne/6c910e7a6d2a6ab4_complete.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/145e12d594f/bf64904yne/d20e1302fe279c03_complete.js" crossorigin="anonymous"></script>
 
     
       
@@ -448,6 +445,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#app-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      App exposure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cronjobs" class="md-nav__link">
     <span class="md-ellipsis">
       CronJobs
@@ -677,6 +683,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#app-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      App exposure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cronjobs" class="md-nav__link">
     <span class="md-ellipsis">
       CronJobs
@@ -777,12 +792,24 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>The AstroShop app is being exposed in the devcontainer to your localhost. If you want to make the endpoints publicly accesible, just go to the ports section, right click on them and change the visibility to public.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
 <h3 id="astroshop">AstroShop<a class="headerlink" href="#astroshop" title="Permanent link">#</a></h3>
-<p>If you encounter problems with the AstroShop app deployed in the <code>astroshop</code> namespace, recycle the pods and expose the app.</p>
+<p>If you encounter problems with the AstroShop app deployed in the <code>astroshop</code> namespace, you can easily recycle the pods.</p>
 <p>Recycle pods:
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>astroshop<span class="w"> </span>--field-selector<span class="o">=</span><span class="s2">&quot;status.phase=Running&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pods<span class="w"> </span>--all<span class="w"> </span>-n<span class="w"> </span>astroshop
 </code></pre></div></p>
-<p>Expose app:
-<div class="highlight"><pre><span></span><code>exposeAstroshop
+<p>But before doing so, if you want to see what is happenning we recommend the following: </p>
+<p>Verify all astroshop pods
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>astroshop
+</code></pre></div></p>
+<p>Check for events in the astroshop namespace
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>astroshop
+</code></pre></div></p>
+<p>Check for system and cluster events 
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>kube-system
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>default
+</code></pre></div></p>
+<h3 id="app-exposure">App exposure<a class="headerlink" href="#app-exposure" title="Permanent link">#</a></h3>
+<p>The Astroshop application is exposed via NodePort and it's mapping port 8080 to Cluster port 30100. Yo can verify it by typing:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>astroshop-frontendproxy<span class="w"> </span>-n<span class="w"> </span>astroshop
 </code></pre></div></p>
 <h3 id="cronjobs">CronJobs<a class="headerlink" href="#cronjobs" title="Permanent link">#</a></h3>
 <p>If you encounter problems with the CronJobs deployed in the <code>cronjobs</code> namespace, reapply the manifests.</p>

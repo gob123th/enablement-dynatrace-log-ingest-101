@@ -617,6 +617,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>The <code>astroshop</code> demo provides several feature flags that you can use to simulate different scenarios. These flags are managed by flagd, a simple feature flag service that supports OpenFeature.</p>
 <p>Flag values can be changed through the user interface provided at http://localhost:8080/feature when running the demo. Changing the values through this user interface will be reflected in the flagd service.</p>
 <p>Navigate to the feature flag user interface by adding <code>/feature</code> to the end of your Codespaces instance URL.</p>
+<p>For example: <code>https://super-duper-capybara-4wvj9xx7wpjh76qr-30100.app.github.dev/feature</code></p>
 <p>Locate the flag <strong>paymentServiceFailure</strong>.  Click the drop down box and change it from <code>off</code> to <code>on</code>.  Click <code>save</code> at the top of the page.  The feature flag should start working within a minute.</p>
 <p><img alt="Flagd Configurator" src="../img/analyze-logs_enable_feature_flag.png" /></p>
 <h2 id="analyze-logs-in-context">Analyze Logs in Context<a class="headerlink" href="#analyze-logs-in-context" title="Permanent link">#</a></h2>
@@ -634,10 +635,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Relevant logs are queried based on the impacted entity using a pre-built DQL query.  Without any manual intervention or context switching, Dynatrace surfaces the root cause relevant logs.  The logs have the error message and even the exception stacktrace information the developers would need to debug the issue.</p>
 <p><img alt="Problem Logs" src="../img/analyze-logs_active_problem_query_logs.png" /></p>
 <div class="admonition tip">
-<p class="admonition-title">Davis Co-Pilot Problem Explanation</p>
+<p class="admonition-title">Davis CoPilot Problem Explanation</p>
 <p><a href="https://www.dynatrace.com/news/blog/davis-copilot-expands-get-answers-and-insights-across-the-dynatrace-platform/" target="_blank">Davis CoPilot provides clear summaries of problems</a>, their root causes, and the suggested remediation steps. Davis CoPilot explains individual issues in clear language from the problem details page and can perform a comparative analysis when multiple problems are selected from the list view. This helps you identify common root causes and propose corrective steps without relying on a team of experts and waiting for hours for critical insights.</p>
 </div>
-<p>If your Dynatrace tenant has Davis Co-Pilot capabilities enabled (optional, not part of this lab) then you should see a button that says <code>Explain</code>.  Click it to open a prompt that will automatically ask Davis Co-Pilot to explain the problem in natural language and suggest remediation steps! </p>
+<p>If your Dynatrace tenant has Davis CoPilot capabilities enabled (optional, not part of this lab) then you should see a button that says <code>Explain</code>.  Click it to open a prompt that will automatically ask Davis CoPilot to explain the problem in natural language and suggest remediation steps! </p>
 <p><img alt="Davis CoPilot" src="../img/analyze-logs_active_problem_davis_copilot.png" /></p>
 <h3 id="kubernetes-app">Kubernetes App<a class="headerlink" href="#kubernetes-app" title="Permanent link">#</a></h3>
 <p>Next, let's approach this issue in the context of our Kubernetes environment.  Open the (new) <code>Kubernetes</code> app and click on the <code>Overview</code> tab at the top.</p>

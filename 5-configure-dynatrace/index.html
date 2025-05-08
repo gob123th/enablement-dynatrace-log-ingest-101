@@ -990,6 +990,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Within our CronJob logs, the <code>log-message-cronjob</code> writes out a message containing an email address.  While this email address isn't real, we can use it as an example of sensitive data masking.</p>
 <div class="highlight"><pre><span></span><code>$TIMESTAMP INFO Log message from cronjob.  email=example@dynatrace.io Ending job.
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Built-In Sensitive Data Masking</p>
+<p>Dynatrace includes built-in sensitive data masking rules for email address, credit cards, URL queries, IBAN, and API-Tokens at the Environment-level.  If these settings are enabled, that may have already caused the email address in the CronJob log to be masked.
+<img alt="Built In Masking" src="../img/configure-dynatrace_settings_log_sensitive_data_masking_builtin.png" /></p>
+</div>
 <h3 id="sensitive-data-masking-rule">Sensitive Data Masking Rule<a class="headerlink" href="#sensitive-data-masking-rule" title="Permanent link">#</a></h3>
 <p>In your Dynatrace tenant, return to the Kubernetes settings for your cluster where you configured the log ingest rule.  In the Log Monitoring section, click on <code>Sensitive data masking</code>.  Click on <code>Add rule</code>.</p>
 <p><img alt="Sensitive Data Masking Rules" src="../img/configure-dynatrace_settings_log_sensitive_data_masking.png" /></p>
@@ -1009,11 +1014,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre></div></p>
 <p><img alt="Sensitive Data Masking Rule" src="../img/configure-dynatrace_settings_log_sensitive_data_masking_rule.png" /></p>
 <p>The advantage of using the SHA-256 masking type is that every unique value (email address) will produce a unique hash value.  This may enable you to see if the log contains the same email address or different email addresses.  However, you will obviously not be able to decrypt what that email address is, keeping it secure!</p>
-<div class="admonition tip">
-<p class="admonition-title">Built-In Sensitive Data Masking</p>
-<p>Dynatrace includes built-in sensitive data masking rules for email address, credit cards, URL queries, IBAN, and API-Tokens at the Environment-level.  If these settings are enabled, that may have already caused the email address in the CronJob log to be masked.
-<img alt="Built In Masking" src="../img/configure-dynatrace_settings_log_sensitive_data_masking_builtin.png" /></p>
-</div>
 <h3 id="query-cronjob-logs_1">Query CronJob Logs<a class="headerlink" href="#query-cronjob-logs_1" title="Permanent link">#</a></h3>
 <p>The CronJob will execute every few minutes.  Allow some time for the job to run again and produce new log records.</p>
 <p>Return to the <code>Logs</code> app and filter on the logs that contain the email address.</p>
@@ -1307,9 +1307,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>matchesValue(status,&quot;WARN&quot;) and matchesValue(message,&quot;PaymentService Fail Feature Flag Enabled&quot;) and isNotNull(dt.entity.cloud_application)
 </code></pre></div></p>
 <p>Metric key:
-<div class="highlight"><pre><span></span><code>astroshop.paymentservice.failure
-</code></pre></div>
-<em>log.astroshop.paymentservice.failure</em></p>
+<div class="highlight"><pre><span></span><code>log.astroshop.paymentservice.failure
+</code></pre></div></p>
 <p>Dimensions:</p>
 <table>
 <thead>

@@ -765,28 +765,28 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </div>
 <h3 id="wait-for-codespace">Wait for Codespace<a class="headerlink" href="#wait-for-codespace" title="Permanent link">#</a></h3>
-<p>We know your time is very valuable. This codespace takes around 7-10 minutes to be fully operational. A local Kubernetes (<a href="https://kind.sigs.k8s.io/" target="_blank">kind</a>) cluster monitored by Dynatrace will be configured and in it a sample application, AstroShop, will be deployed. To make your experience best, we are also installing and configuring tools like:</p>
+<p>We know your time is very valuable. This codespace takes around 7-10 minutes to be fully operational. A local Kubernetes (<a href="https://kind.sigs.k8s.io/" target="_blank">kind</a>) cluster will be configured and in it a sample application, AstroShop, will be deployed. To make your experience better, we are also installing and configuring tools like:</p>
 <p><strong>k9s kubectl helm node jq python3 gh</strong></p>
 <h2 id="explore-codespace">Explore Codespace<a class="headerlink" href="#explore-codespace" title="Permanent link">#</a></h2>
 <p>Your Codespace has now deployed the following resources:</p>
 <ul>
 <li>
-<p>A local Kubernetes (<a href="https://kind.sigs.k8s.io/" target="_blank">kind</a>) cluster monitored by Dynatrace, with some pre-deployed apps
-  that will be used later in the demo.</p>
+<p>A local Kubernetes (<a href="https://kind.sigs.k8s.io/" target="_blank">kind</a>) cluster, with some pre-deployed apps that will be used later in the demo.</p>
 </li>
 <li>
-<p>After a couple of minutes, you'll see this screen in your codespaces terminal. It contains the links to the local expose labguide and the UI of the application which we will be doing our Hands-On training.</p>
+<p>CronJobs running in Kubernetes that generate some sample log data</p>
 </li>
 </ul>
+<p>After a couple of minutes, you'll see this screen in your Codespaces terminal. It contains the links to the UI of the application which we will be using for our hands-on training.</p>
 <p>Sample output:
 <img alt="Codespaces finish" src="../img/codespaces_finish.png" /></p>
 <h2 id="tips-tricks">Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Permanent link">#</a></h2>
 <p>We want to boost your learning and try to make your experience as smooth as possible with Dynatrace trainings. Your Codespaces have a couple of convenience features added. </p>
 <h3 id="show-the-greeting">Show the greeting<a class="headerlink" href="#show-the-greeting" title="Permanent link">#</a></h3>
-<p>In the terminal, there are functions loaded for your convenience. By creating a new Terminal the Greeting will be shown that includes the links to the exposed apps, the Github  pages, the Github Repository, the Dynatrace Tenant that is bound to this devcontainer and some of the tools installed.</p>
-<p>You can create a new Terminal directly in VSCode, type <code>zsh</code> or call the function <code>printGreeting</code> and that will print the greeting with the most relevant information.</p>
+<p>In the terminal, there are functions loaded for your convenience. By creating a new terminal the greeting will be shown that includes the links to the exposed apps, the Github  pages, the Github Repository, the Dynatrace Tenant that is bound to this devcontainer (if applicable) and some of the tools installed.</p>
+<p>You can create a new terminal directly in VSCode, type <code>zsh</code> or call the function <code>printGreeting</code> and that will print the greeting with the most relevant information.</p>
 <h3 id="navigating-in-your-local-kubernetes">Navigating in your local Kubernetes<a class="headerlink" href="#navigating-in-your-local-kubernetes" title="Permanent link">#</a></h3>
-<p>The client <code>kubectl</code> and <code>k9s</code>are configured so you can navigate in your local Kubernetes like butter. 
+<p>The client <code>kubectl</code> and <code>k9s</code> are configured so you can navigate in your local Kubernetes. 
 <img alt="k9s" src="../img/k9s.png" /></p>
 <h3 id="exposing-the-apps-to-the-public">Exposing the apps to the public<a class="headerlink" href="#exposing-the-apps-to-the-public" title="Permanent link">#</a></h3>
 <p>The AstroShop app is being exposed in the devcontainer to your localhost. If you want to make the endpoints publicly accesible, just go to the ports section, right click on them and change the visibility to public.</p>
@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Recycle pods:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pods<span class="w"> </span>--all<span class="w"> </span>-n<span class="w"> </span>astroshop
 </code></pre></div></p>
-<p>But before doing so, if you want to see what is happenning we recommend the following: </p>
+<p>But before doing so, if you want to see what is happening we recommend the following: </p>
 <p>Verify all astroshop pods
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>astroshop
 </code></pre></div></p>
@@ -808,7 +808,8 @@ document.addEventListener('DOMContentLoaded', function() {
 kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>default
 </code></pre></div></p>
 <h3 id="app-exposure">App exposure<a class="headerlink" href="#app-exposure" title="Permanent link">#</a></h3>
-<p>The Astroshop application is exposed via NodePort and it's mapping port 8080 to Cluster port 30100. Yo can verify it by typing:
+<p>The Astroshop application is exposed via NodePort and it's mapping port 8080 to Cluster port 30100.</p>
+<p>Verify service:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>astroshop-frontendproxy<span class="w"> </span>-n<span class="w"> </span>astroshop
 </code></pre></div></p>
 <h3 id="cronjobs">CronJobs<a class="headerlink" href="#cronjobs" title="Permanent link">#</a></h3>

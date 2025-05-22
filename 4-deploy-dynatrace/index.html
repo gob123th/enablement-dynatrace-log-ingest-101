@@ -711,14 +711,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Generate a Dynatrace Operator Token.  Copy and save the value somewhere, in case you need it.  The value will automatically be added to the <code>dynakube.yaml</code> file.</p>
 <p>Generate a Data Ingest Token.  Copy and save the value somewhere, in case you need it.  The value will automatically be added to the <code>dynakube.yaml</code> file.</p>
 <p>Download the <code>dynakube.yaml</code> file.</p>
-<div class="admonition warning">
-<p class="admonition-title">Fix the error when installing via HELM</p>
-<p>There is momentarely an error deploying the Operator via HELM in a Kind cluster. We are looking into it. For the time being please deploy the Dynatrace Operator via kubectl. Here the commands:
+<div class="admonition bug">
+<p class="admonition-title"> .prov error when installing DT Operator via HELM</p>
+<p>There is momentarely a bug when deploying the Operator via HELM in a Kind cluster. We are looking into it. For the time being please deploy the Dynatrace Operator via kubectl. Here the commands:
 <div class="highlight"><span class="filename">kubectl commands to deploy the Dynatrace Operator</span><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>dynatrace
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/Dynatrace/dynatrace-operator/releases/download/v1.5.1/kubernetes-csi.yaml
 </code></pre></div></p>
 </div>
-<p>Copy the <code>helm install dynatrace-operator</code> command to your clipboard.  Use the command from your Dynatrace tenant, but it should look similar to this:
+<p>~~Copy the <code>helm install dynatrace-operator</code> command to your clipboard.  Use the command from your Dynatrace tenant, but it should look similar to this:~~
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>dynatrace-operator<span class="w"> </span>oci://public.ecr.aws/dynatrace/dynatrace-operator<span class="w"> </span><span class="se">\</span>
 --create-namespace<span class="w"> </span><span class="se">\</span>
 --namespace<span class="w"> </span>dynatrace<span class="w"> </span><span class="se">\</span>

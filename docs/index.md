@@ -36,6 +36,8 @@ During this hands-on training lab, we’ll learn how to capture logs from Kubern
 
 8. Clean up GitHub codespaces instance
 
+--8<-- "snippets/opentelemetry-logs.md"
+
 ## Technical Specification
 
 ### Technologies Used

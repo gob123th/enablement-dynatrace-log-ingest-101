@@ -125,7 +125,7 @@ kubectl get pods -n dynatrace
 
 Enabling **Log Management and Analytics** with the option `Fully managed with Dynatrace Log Module` will add the Log Module to the Dynakube spec.
 
-```yaml
+```yaml title="Dynakube sample - Kubernetes platform monitoring + Application Observability + Log Management enabled"
 ---
 apiVersion: dynatrace.com/v1beta3
 kind: DynaKube

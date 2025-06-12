@@ -5,7 +5,7 @@
 
 The `astroshop` demo provides several feature flags that you can use to simulate different scenarios. These flags are managed by flagd, a simple feature flag service that supports OpenFeature.
 
-Flag values can be changed through the user interface provided at http://localhost:8080/feature when running the demo. Changing the values through this user interface will be reflected in the flagd service.
+Flag values can be changed through the user interface provided at http://localhost:30100/feature when running the demo. Changing the values through this user interface will be reflected in the flagd service.
 
 Navigate to the feature flag user interface by adding `/feature` to the end of your Codespaces instance URL.
 
@@ -40,9 +40,13 @@ Relevant logs are queried based on the impacted entity using a pre-built DQL que
 !!! tip "Davis CoPilot Problem Explanation"
     [Davis CoPilot provides clear summaries of problems](https://www.dynatrace.com/news/blog/davis-copilot-expands-get-answers-and-insights-across-the-dynatrace-platform/){target=_blank}, their root causes, and the suggested remediation steps. Davis CoPilot explains individual issues in clear language from the problem details page and can perform a comparative analysis when multiple problems are selected from the list view. This helps you identify common root causes and propose corrective steps without relying on a team of experts and waiting for hours for critical insights.
 
-If your Dynatrace tenant has Davis CoPilot capabilities enabled (optional, not part of this lab) then you should see a button that says `Explain`.  Click it to open a prompt that will automatically ask Davis CoPilot to explain the problem in natural language and suggest remediation steps! 
+    If your Dynatrace tenant has Davis CoPilot capabilities enabled (optional, not part of this lab) then you should see a button that says `Explain`.  Click it to open a prompt that will automatically ask Davis CoPilot to explain the problem in natural language and suggest remediation steps!  
 
-![Davis CoPilot](./img/analyze-logs_active_problem_davis_copilot.png)
+    ??? question "How to enable Davis Copilot"
+        If if the explain button is not showing in the problem then you can [follow the official documentation to get started with Davis Copilot in your tenant](https://docs.dynatrace.com/docs/discover-dynatrace/platform/davis-ai/copilot/copilot-getting-started)
+
+
+    ![Davis CoPilot](./img/analyze-logs_active_problem_davis_copilot.png)
 
 ### Kubernetes App
 

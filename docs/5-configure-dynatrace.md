@@ -52,7 +52,7 @@ cronjobs
 ```
 
 Kubernetes pod annotation is
-```text
+```yaml
 logs.dynatrace.io/ingest=true
 ```
 
@@ -248,7 +248,8 @@ k8s.namespace.name = dynatrace
 
 ![Dynatrace Logs](./img/configure-dynatrace_logs_query_dynatrace_logs.png)
 
-These logs can help with troubleshooting any observability issues on the Kubernetes cluster.  However, it is the Log Module that is collecting these logs, so if the Log Module is not working - the logs won't be shipped to Dynatrace!
+!!! tip "Troubleshooting Observability issues with Dynatrace" 
+    These logs can help with troubleshooting any observability issues on the Kubernetes cluster.  However, it is the Log Module that is collecting these logs, so if the Log Module is not working - the logs won't be shipped to Dynatrace!
 
 ## Configure OpenPipeline
 
@@ -264,10 +265,48 @@ Dynatrace OpenPipeline can reshape incoming data for better understanding, proce
 
 The logs written by the `paymentservice` within the `astroshop` application are missing some important context information, making them a great candidate for ingest processing with OpenPipeline.
 
-Sample log snippet:
-```json
-{"level":30,"time":1744936198898,"pid":1,"hostname":"astroshop-paymentservice-7dbc46ff58-4msdx","dt.entity.host":"HOST-815866271C8841E1","dt.entity.kubernetes_cluster":"KUBERNETES_CLUSTER-FD9401B313C80ED9","dt.entity.process_group":"PROCESS_GROUP-F8DE358ACD7BA713","dt.entity.process_group_instance":"PROCESS_GROUP_INSTANCE-BE5376E9380A3175","dt.kubernetes.cluster.id":"dfc521db-c6be-471f-9e20-24f62e45bb69","dt.kubernetes.workload.kind":"deployment","dt.kubernetes.workload.name":"astroshop-paymentservice","k8s.cluster.name":"enablement-log-ingest-101","k8s.cluster.uid":"dfc521db-c6be-471f-9e20-24f62e45bb69","k8s.container.name":"paymentservice","k8s.namespace.name":"astroshop","k8s.node.name":"kind-control-plane","k8s.pod.name":"astroshop-paymentservice-7dbc46ff58-4msdx","k8s.pod.uid":"8992e584-dc50-48f9-b243-1facae6d1ba5","k8s.workload.kind":"deployment","k8s.workload.name":"astroshop-paymentservice","process.technology":"nodejs","dt.trace_id":"6977c25e6f6a6b4fcc0117087990d95b","dt.span_id":"54f824774f71e56c","dt.trace_sampled":"true","transactionId":"f762bcae-fdb7-4f55-9576-a99273683d12","cardType":"visa","lastFourDigits":"1278","amount":{"units":{"low":1173,"high":0,"unsigned":false},"nanos":999999999,"currencyCode":"USD"},"msg":"Transaction complete."}
-```
+???+ abstract "Sample log snippet {...}"
+    ```json
+    {
+    "level":30,
+    "time":1744936198898,
+    "pid":1,
+    "hostname":"astroshop-paymentservice-7dbc46ff58-4msdx",
+    "dt.entity.host":"HOST-815866271C8841E1",
+    "dt.entity.kubernetes_cluster":"KUBERNETES_CLUSTER-FD9401B313C80ED9",
+    "dt.entity.process_group":"PROCESS_GROUP-F8DE358ACD7BA713",
+    "dt.entity.process_group_instance":"PROCESS_GROUP_INSTANCE-BE5376E9380A3175",
+    "dt.kubernetes.cluster.id":"dfc521db-c6be-471f-9e20-24f62e45bb69",
+    "dt.kubernetes.workload.kind":"deployment",
+    "dt.kubernetes.workload.name":"astroshop-paymentservice",
+    "k8s.cluster.name":"enablement-log-ingest-101",
+    "k8s.cluster.uid":"dfc521db-c6be-471f-9e20-24f62e45bb69",
+    "k8s.container.name":"paymentservice",
+    "k8s.namespace.name":"astroshop",
+    "k8s.node.name":"kind-control-plane",
+    "k8s.pod.name":"astroshop-paymentservice-7dbc46ff58-4msdx",
+    "k8s.pod.uid":"8992e584-dc50-48f9-b243-1facae6d1ba5",
+    "k8s.workload.kind":"deployment",
+    "k8s.workload.name":"astroshop-paymentservice",
+    "process.technology":"nodejs",
+    "dt.trace_id":"6977c25e6f6a6b4fcc0117087990d95b",
+    "dt.span_id":"54f824774f71e56c",
+    "dt.trace_sampled":"true",
+    "transactionId":"f762bcae-fdb7-4f55-9576-a99273683d12",
+    "cardType":"visa",
+    "lastFourDigits":"1278",
+    "amount":{
+        "units":{
+            "low":1173,
+            "high":0,
+            "unsigned":false
+        },
+        "nanos":999999999,
+        "currencyCode":"USD"
+    },
+    "msg":"Transaction complete."
+    }
+    ```
 
 ### Configure Custom Logs Pipeline
 
@@ -297,7 +336,7 @@ Technology Bundle: NodeJS
 ```
 
 Matching condition:
-```text
+```SQL
 Pre-defined: matchesValue(process.technology, "Node.js") or matchesValue(process.technology, "nodejs")
 ```
 
@@ -313,17 +352,17 @@ Parse Content
 ```
 
 Type:
-```text
+```DQL
 DQL
 ```
 
 Matching condition:
-```text
+```SQL
 isNotNull(log.raw_level) and loglevel != "NONE" and isNotNull(message)
 ```
 
 DQL processor definition:
-```text
+```SQL
 parse content, "JSON:json_content"
 | fieldsAdd content = json_content
 | fieldsFlatten content, depth: 3
@@ -346,12 +385,12 @@ DQL
 ```
 
 Matching condition:
-```text
+```SQL
 isNotNull(log.raw_level) and loglevel != "NONE" and isNotNull(message) and isNotNull(json_content)
 ```
 
 DQL processor definition:
-```text
+```SQL
 fieldsRemove content
 | fieldsAdd content = message
 ```
@@ -373,12 +412,12 @@ DQL
 ```
 
 Matching condition:
-```text
+```SQL
 matchesValue(content,"Transaction complete.") and isNotNull(content.amount.units.low) and isNotNull(content.transactionId)
 ```
 
 DQL processor definition:
-```text
+```SQL
 fieldsAdd payment.amount = content.amount.units.low
 | fieldsAdd payment.transactionid = content.transactionId
 | fieldsAdd payment.currencycode = content.amount.currencyCode
@@ -403,12 +442,12 @@ DQL
 ```
 
 Matching condition:
-```text
+```SQL
 isNotNull(content.request.creditCard.creditCardNumber)
 ```
 
 DQL processor definition:
-```text
+```SQL
 fieldsAdd maskedcreditcardnumber = hashMd5(content.request.creditCard.creditCardNumber)
 | fieldsRemove content.request.creditCard.creditCardNumber
 ```
@@ -430,12 +469,12 @@ DQL
 ```
 
 Matching condition:
-```text
+```SQL
 isNotNull(log.raw_level) and loglevel != "NONE" and isNotNull(message) and isNotNull(json_content) and isNotNull(content)
 ```
 
 DQL processor definition:
-```text
+```SQL
 fieldsRemove "content.dt.*", "content.k8s.*", "content.time","content.level", "content.process.technology", "content.hostname", "content.pid"
 | fieldsRemove "content.request.creditCard.*"
 | fieldsRemove json_content
@@ -462,17 +501,17 @@ Business Event
 ```
 
 Matching condition:
-```text
+```SQL
 matchesValue(content,"Transaction complete.") and isNotNull(payment.amount) and isNotNull(payment.transactionid)
 ```
 
 Event type:
-```text
+```SQL
 astroshop.paymentservice.transaction.complete
 ```
 
 Event provider:
-```text
+```SQL
 astroshop
 ```
 
@@ -498,7 +537,7 @@ Davis Event
 ```
 
 Matching condition:
-```text
+```SQL
 matchesValue(status,"WARN") and matchesValue(message,"PaymentService Fail Feature Flag Enabled") and isNotNull(dt.entity.cloud_application)
 ```
 
@@ -544,12 +583,12 @@ Counter metric
 ```
 
 Matching condition:
-```text
+```SQL
 matchesValue(status,"WARN") and matchesValue(message,"PaymentService Fail Feature Flag Enabled") and isNotNull(dt.entity.cloud_application)
 ```
 
 Metric key:
-```text
+```SQL
 log.astroshop.paymentservice.failure
 ```
 
@@ -587,7 +626,7 @@ AstroShop PaymentService
 ```
 
 Matching condition:
-```text
+```SQL
 matchesValue(k8s.namespace.name,"astroshop") and matchesValue(k8s.container.name,"paymentservice")
 ```
 
@@ -610,7 +649,7 @@ Allow the `paymentservice` from `astroshop` to generate new log data that will b
 
 Return to the `Logs` app and filter on the logs generated by the payment service.
 
-```text
+```SQL
 k8s.namespace.name = "astroshop" k8s.container.name = "paymentservice" 
 ```
 

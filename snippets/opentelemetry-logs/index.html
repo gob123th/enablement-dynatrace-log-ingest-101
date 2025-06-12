@@ -10,22 +10,20 @@
       
       
       
-        <link rel="next" href="2-getting-started/">
       
-      
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
     
     
       
-        <title>Dynatrace Enablement Lab: Log Ingest 101</title>
+        <title>Opentelemetry logs - Dynatrace Enablement Lab: Log Ingest 101</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -77,11 +75,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#lab-overview" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -94,7 +87,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-header__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
+    <a href="../.." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-header__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              1. About
+              Opentelemetry logs
             
           </span>
         </div>
@@ -237,7 +230,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-nav__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
+    <a href="../.." title="Dynatrace Enablement Lab: Log Ingest 101" class="md-nav__button md-logo" aria-label="Dynatrace Enablement Lab: Log Ingest 101" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -264,28 +257,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    1. About
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -294,75 +269,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lab-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Lab Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technical-specification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technical Specification
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Technical Specification">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#technologies-used" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technologies Used
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reference-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reference Architecture
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#continue" class="md-nav__link">
-    <span class="md-ellipsis">
-      Continue
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -374,7 +280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="2-getting-started/" class="md-nav__link">
+      <a href="../../2-getting-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -394,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="3-codespaces/" class="md-nav__link">
+      <a href="../../3-codespaces/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +320,7 @@
   
   
     <li class="md-nav__item">
-      <a href="4-deploy-dynatrace/" class="md-nav__link">
+      <a href="../../4-deploy-dynatrace/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -434,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="5-configure-dynatrace/" class="md-nav__link">
+      <a href="../../5-configure-dynatrace/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -454,7 +360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="6-analyze-logs/" class="md-nav__link">
+      <a href="../../6-analyze-logs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -474,7 +380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cleanup/" class="md-nav__link">
+      <a href="../../cleanup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -505,65 +411,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lab-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Lab Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technical-specification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technical Specification
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Technical Specification">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#technologies-used" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technologies Used
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reference-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reference Architecture
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#continue" class="md-nav__link">
-    <span class="md-ellipsis">
-      Continue
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -580,100 +427,13 @@
   
 
 
-  <h1>1. About</h1>
+  <h1>Opentelemetry logs</h1>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  dynatrace.sendBizEvent('page_load', {"page": "1. About"})
-});
-</script>
-
-<div class="admonition warning">
-<p class="admonition-title">Support Policy</p>
-<p>This is an enablement project created by the Center of Excellence - Enablement Team at Dynatrace.</p>
-<p><strong>Support is provided via GitHub issues only</strong>. The materials provided in this repository are offered "as-is" without any warranties, express or implied. Use them at your own risk.</p>
-</div>
-<h2 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">#</a></h2>
-<p>During this hands-on training lab, we’ll learn how to capture logs from Kubernetes using the Dynatrace Operator to deploy the Dynatrace Log Module.  We'll then configure log monitoring in Dynatrace to maximize the value that we get from logs.  Finally, we'll analyze the logs in context using the various apps native to the Dynatrace platform.</p>
-<p><strong>Lab tasks:</strong></p>
-<ol>
-<li>
-<p>Launch GitHub codespaces container with lab setup</p>
-<ul>
-<li>Kubernetes cluster running AstroShop demo application</li>
-</ul>
-</li>
-<li>
-<p>Deploy Kubernetes Platform Monitoring + Application Observability</p>
-</li>
-<li>
-<p>Configure and validate Kubernetes log ingest into Dynatrace</p>
-</li>
-<li>
-<p>Ingest CronJob logs</p>
-</li>
-<li>
-<p>Configure advanced log monitoring in Dynatrace</p>
-<ul>
-<li>Log module feature flags</li>
-<li>Sensitive data masking</li>
-<li>Timestamp patterns and splitting</li>
-<li>Dynatrace component logs for self-monitoring</li>
-</ul>
-</li>
-<li>
-<p>Configure Dynatrace OpenPipeline for log transformation on ingest</p>
-</li>
-<li>
-<p>Analyze logs in context using apps native to the Dynatrace platform</p>
-<ul>
-<li>Problems</li>
-<li>Kubernetes</li>
-<li>Distributed Tracing</li>
-<li>Services</li>
-</ul>
-</li>
-<li>
-<p>Clean up GitHub codespaces instance</p>
-</li>
-</ol>
 <div class="admonition warning">
 <p class="admonition-title">The OpenTelemetry Option</p>
 <p>Did you know that the Dynatrace Operator is not the only way to achieve this goal?
 It is possible using pure OpenTelemetry. Here is a tutorial which guides you through this option:</p>
 <p><a href="https://dynatrace.github.io/demo-opentelemetry-cleanup" target="_blank">Ingest Logs into Dynatrace using OpenTelemetry</a></p>
-</div>
-<h2 id="technical-specification">Technical Specification<a class="headerlink" href="#technical-specification" title="Permanent link">#</a></h2>
-<h3 id="technologies-used">Technologies Used<a class="headerlink" href="#technologies-used" title="Permanent link">#</a></h3>
-<ul>
-<li><a href="https://www.dynatrace.com/trial">Dynatrace</a></li>
-<li><a href="https://kind.sigs.k8s.io/">Kubernetes Kind</a><ul>
-<li>tested on Kind tag 0.27.0</li>
-</ul>
-</li>
-<li><a href="https://cert-manager.io/">Cert Manager</a> - *prerequisite for OpenTelemetry Operator<ul>
-<li>tested on cert-manager v1.15.3</li>
-</ul>
-</li>
-<li><a href="https://github.com/Dynatrace/dynatrace-operator">Dynatrace Operator</a><ul>
-<li>tested on v1.4.2 (April 2025)</li>
-</ul>
-</li>
-<li>Dynatrace OneAgent<ul>
-<li>tested on v1.309 (April 2025)</li>
-</ul>
-</li>
-</ul>
-<h3 id="reference-architecture">Reference Architecture<a class="headerlink" href="#reference-architecture" title="Permanent link">#</a></h3>
-<p><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/application-monitoring">Dynatrace on Kubernetes: Application observability</a></p>
-<p><a href="https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/how-it-works/kubernetes-monitoring">Dynatrace on Kubernetes: Platform monitoring</a></p>
-<p><a href="https://opentelemetry.io/docs/demo/architecture/">OpenTelemetry Astronomy Shop Demo Architecture</a></p>
-<h2 id="continue">Continue<a class="headerlink" href="#continue" title="Permanent link">#</a></h2>
-<p>In the next section, we'll review the prerequisites for this lab needed before launching our Codespaces instance.</p>
-<div class="grid cards">
-<ul>
-<li><a href="2-getting-started/">Continue to getting started<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span></a></li>
-</ul>
 </div>
 
 
@@ -721,10 +481,10 @@ It is possible using pure OpenTelemetry. Here is a tutorial which guides you thr
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
       
     
   </body>

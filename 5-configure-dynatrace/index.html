@@ -955,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>cronjobs
 </code></pre></div></p>
 <p>Kubernetes pod annotation is
-<div class="highlight"><pre><span></span><code>logs.dynatrace.io/ingest=true
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">logs.dynatrace.io/ingest=true</span>
 </code></pre></div></p>
 <p><img alt="Create Rule" src="../img/configure-dynatrace_settings_log_ingest_create_rule.png" /></p>
 <p>This rule will enable the Log Module to collect logs from pods that belong to the <code>cronjobs</code> namespace <strong>AND</strong> have the annotation <code>logs.dynatrace.io/ingest: true</code>.</p>
@@ -1097,7 +1097,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>k8s.namespace.name = dynatrace
 </code></pre></div>
 <p><img alt="Dynatrace Logs" src="../img/configure-dynatrace_logs_query_dynatrace_logs.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Troubleshooting Observability issues with Dynatrace</p>
 <p>These logs can help with troubleshooting any observability issues on the Kubernetes cluster.  However, it is the Log Module that is collecting these logs, so if the Log Module is not working - the logs won't be shipped to Dynatrace!</p>
+</div>
 <h2 id="configure-openpipeline">Configure OpenPipeline<a class="headerlink" href="#configure-openpipeline" title="Permanent link">#</a></h2>
 <p>OpenPipeline is the Dynatrace data handling solution to seamlessly ingest and process data from different sources, at any scale, and in any format in the Dynatrace Platform.</p>
 <p>Dynatrace OpenPipeline can reshape incoming data for better understanding, processing, and analysis. OpenPipeline processing is based on rules that you create and offers a flexible way of extracting value from raw records.</p>
@@ -1108,9 +1111,49 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </div>
 <p>The logs written by the <code>paymentservice</code> within the <code>astroshop</code> application are missing some important context information, making them a great candidate for ingest processing with OpenPipeline.</p>
-<p>Sample log snippet:
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="mi">1744936198898</span><span class="p">,</span><span class="nt">&quot;pid&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.host&quot;</span><span class="p">:</span><span class="s2">&quot;HOST-815866271C8841E1&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.kubernetes_cluster&quot;</span><span class="p">:</span><span class="s2">&quot;KUBERNETES_CLUSTER-FD9401B313C80ED9&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.process_group&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP-F8DE358ACD7BA713&quot;</span><span class="p">,</span><span class="nt">&quot;dt.entity.process_group_instance&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP_INSTANCE-BE5376E9380A3175&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.cluster.id&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span><span class="nt">&quot;dt.kubernetes.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.cluster.name&quot;</span><span class="p">:</span><span class="s2">&quot;enablement-log-ingest-101&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.cluster.uid&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.container.name&quot;</span><span class="p">:</span><span class="s2">&quot;paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.namespace.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.node.name&quot;</span><span class="p">:</span><span class="s2">&quot;kind-control-plane&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.pod.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.pod.uid&quot;</span><span class="p">:</span><span class="s2">&quot;8992e584-dc50-48f9-b243-1facae6d1ba5&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span><span class="nt">&quot;k8s.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span><span class="nt">&quot;process.technology&quot;</span><span class="p">:</span><span class="s2">&quot;nodejs&quot;</span><span class="p">,</span><span class="nt">&quot;dt.trace_id&quot;</span><span class="p">:</span><span class="s2">&quot;6977c25e6f6a6b4fcc0117087990d95b&quot;</span><span class="p">,</span><span class="nt">&quot;dt.span_id&quot;</span><span class="p">:</span><span class="s2">&quot;54f824774f71e56c&quot;</span><span class="p">,</span><span class="nt">&quot;dt.trace_sampled&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="nt">&quot;transactionId&quot;</span><span class="p">:</span><span class="s2">&quot;f762bcae-fdb7-4f55-9576-a99273683d12&quot;</span><span class="p">,</span><span class="nt">&quot;cardType&quot;</span><span class="p">:</span><span class="s2">&quot;visa&quot;</span><span class="p">,</span><span class="nt">&quot;lastFourDigits&quot;</span><span class="p">:</span><span class="s2">&quot;1278&quot;</span><span class="p">,</span><span class="nt">&quot;amount&quot;</span><span class="p">:{</span><span class="nt">&quot;units&quot;</span><span class="p">:{</span><span class="nt">&quot;low&quot;</span><span class="p">:</span><span class="mi">1173</span><span class="p">,</span><span class="nt">&quot;high&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&quot;unsigned&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">},</span><span class="nt">&quot;nanos&quot;</span><span class="p">:</span><span class="mi">999999999</span><span class="p">,</span><span class="nt">&quot;currencyCode&quot;</span><span class="p">:</span><span class="s2">&quot;USD&quot;</span><span class="p">},</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Transaction complete.&quot;</span><span class="p">}</span>
-</code></pre></div></p>
+<details class="abstract" open="open">
+<summary>Sample log snippet {...}</summary>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span>
+<span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="mi">1744936198898</span><span class="p">,</span>
+<span class="nt">&quot;pid&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.entity.host&quot;</span><span class="p">:</span><span class="s2">&quot;HOST-815866271C8841E1&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.entity.kubernetes_cluster&quot;</span><span class="p">:</span><span class="s2">&quot;KUBERNETES_CLUSTER-FD9401B313C80ED9&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.entity.process_group&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP-F8DE358ACD7BA713&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.entity.process_group_instance&quot;</span><span class="p">:</span><span class="s2">&quot;PROCESS_GROUP_INSTANCE-BE5376E9380A3175&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.kubernetes.cluster.id&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.kubernetes.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.kubernetes.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.cluster.name&quot;</span><span class="p">:</span><span class="s2">&quot;enablement-log-ingest-101&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.cluster.uid&quot;</span><span class="p">:</span><span class="s2">&quot;dfc521db-c6be-471f-9e20-24f62e45bb69&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.container.name&quot;</span><span class="p">:</span><span class="s2">&quot;paymentservice&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.namespace.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.node.name&quot;</span><span class="p">:</span><span class="s2">&quot;kind-control-plane&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.pod.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice-7dbc46ff58-4msdx&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.pod.uid&quot;</span><span class="p">:</span><span class="s2">&quot;8992e584-dc50-48f9-b243-1facae6d1ba5&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.workload.kind&quot;</span><span class="p">:</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span>
+<span class="nt">&quot;k8s.workload.name&quot;</span><span class="p">:</span><span class="s2">&quot;astroshop-paymentservice&quot;</span><span class="p">,</span>
+<span class="nt">&quot;process.technology&quot;</span><span class="p">:</span><span class="s2">&quot;nodejs&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.trace_id&quot;</span><span class="p">:</span><span class="s2">&quot;6977c25e6f6a6b4fcc0117087990d95b&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.span_id&quot;</span><span class="p">:</span><span class="s2">&quot;54f824774f71e56c&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dt.trace_sampled&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="nt">&quot;transactionId&quot;</span><span class="p">:</span><span class="s2">&quot;f762bcae-fdb7-4f55-9576-a99273683d12&quot;</span><span class="p">,</span>
+<span class="nt">&quot;cardType&quot;</span><span class="p">:</span><span class="s2">&quot;visa&quot;</span><span class="p">,</span>
+<span class="nt">&quot;lastFourDigits&quot;</span><span class="p">:</span><span class="s2">&quot;1278&quot;</span><span class="p">,</span>
+<span class="nt">&quot;amount&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;units&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;low&quot;</span><span class="p">:</span><span class="mi">1173</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;high&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;unsigned&quot;</span><span class="p">:</span><span class="kc">false</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;nanos&quot;</span><span class="p">:</span><span class="mi">999999999</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;currencyCode&quot;</span><span class="p">:</span><span class="s2">&quot;USD&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Transaction complete.&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</details>
 <h3 id="configure-custom-logs-pipeline">Configure Custom Logs Pipeline<a class="headerlink" href="#configure-custom-logs-pipeline" title="Permanent link">#</a></h3>
 <p>In your Dynatrace tenant, open the <code>OpenPipeline</code> app.  Select <code>Logs</code> and click on the <code>Pipelines</code> tab.  Add a new Pipeline by clicking on <code>+ Pipeline</code>.</p>
 <p><img alt="OpenPipeline Logs Pipelines" src="../img/configure-dynatrace_opp_logs_pipelines.png" /></p>
@@ -1129,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>Technology Bundle: NodeJS
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>Pre-defined: matchesValue(process.technology, &quot;Node.js&quot;) or matchesValue(process.technology, &quot;nodejs&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">Pre</span><span class="o">-</span><span class="k">defined</span><span class="p">:</span><span class="w"> </span><span class="n">matchesValue</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">technology</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Node.js&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">matchesValue</span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">technology</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;nodejs&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p>This processor rule will apply built-in pattern detection for known NodeJS technology log frameworks to parse and enrich the log content.  In our example, this will be important to extract the numeric <code>loglevel</code> into a recognizable string value; such as "INFO" or "WARN".</p>
 <p><img alt="NodeJS Processor" src="../img/configure-dynatrace_opp_nodejs.png" /></p>
@@ -1141,12 +1184,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>DQL
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message)
+<div class="highlight"><pre><span></span><code><span class="n">isNotNull</span><span class="p">(</span><span class="n">log</span><span class="p">.</span><span class="n">raw_level</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">loglevel</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="ss">&quot;NONE&quot;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div></p>
 <p>DQL processor definition:
-<div class="highlight"><pre><span></span><code>parse content, &quot;JSON:json_content&quot;
-| fieldsAdd content = json_content
-| fieldsFlatten content, depth: 3
+<div class="highlight"><pre><span></span><code><span class="n">parse</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;JSON:json_content&quot;</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">json_content</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsFlatten</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">depth</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
 </code></pre></div></p>
 <p>This processor rule will parse the JSON structured <code>content</code> field and flatten the object into new fields.  This will make accessing the details in the content field much easier.</p>
 <p><img alt="Parse Content Processor" src="../img/configure-dynatrace_opp_parse_content.png" /></p>
@@ -1158,11 +1201,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>DQL
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message) and isNotNull(json_content)
+<div class="highlight"><pre><span></span><code><span class="n">isNotNull</span><span class="p">(</span><span class="n">log</span><span class="p">.</span><span class="n">raw_level</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">loglevel</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="ss">&quot;NONE&quot;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span>
 </code></pre></div></p>
 <p>DQL processor definition:
-<div class="highlight"><pre><span></span><code>fieldsRemove content
-| fieldsAdd content = message
+<div class="highlight"><pre><span></span><code><span class="n">fieldsRemove</span><span class="w"> </span><span class="n">content</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message</span>
 </code></pre></div></p>
 <p>This processor rule will replace the <code>content</code> field value with the <code>message</code> field value.  The JSON object in the content field is excessive and contains a ton of information that isn't relative to the field itself.  The same information already exists on the log, outside of the content field.</p>
 <p><img alt="Message to Content Processor" src="../img/configure-dynatrace_opp_message_to_content.png" /></p>
@@ -1174,14 +1217,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>DQL
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>matchesValue(content,&quot;Transaction complete.&quot;) and isNotNull(content.amount.units.low) and isNotNull(content.transactionId)
+<div class="highlight"><pre><span></span><code><span class="n">matchesValue</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="ss">&quot;Transaction complete.&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">content</span><span class="p">.</span><span class="n">amount</span><span class="p">.</span><span class="n">units</span><span class="p">.</span><span class="n">low</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">content</span><span class="p">.</span><span class="n">transactionId</span><span class="p">)</span>
 </code></pre></div></p>
 <p>DQL processor definition:
-<div class="highlight"><pre><span></span><code>fieldsAdd payment.amount = content.amount.units.low
-| fieldsAdd payment.transactionid = content.transactionId
-| fieldsAdd payment.currencycode = content.amount.currencyCode
-| fieldsAdd payment.cardtype = content.cardType
-| fieldsAdd payment.lastfourdigits = content.lastFourDigits
+<div class="highlight"><pre><span></span><code><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">payment</span><span class="p">.</span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">amount</span><span class="p">.</span><span class="n">units</span><span class="p">.</span><span class="n">low</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">payment</span><span class="p">.</span><span class="n">transactionid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">transactionId</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">payment</span><span class="p">.</span><span class="n">currencycode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">amount</span><span class="p">.</span><span class="n">currencyCode</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">payment</span><span class="p">.</span><span class="n">cardtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">cardType</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">payment</span><span class="p">.</span><span class="n">lastfourdigits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">lastFourDigits</span>
 </code></pre></div></p>
 <p>This processor rule will simplify the field names for extracting business information.  When the service successfully processes a payment transaction, a log record is written with the payment information.  We want this information extracted for business observability use cases.</p>
 <p><img alt="Transaction Fields Processor" src="../img/configure-dynatrace_opp_transaction_fields.png" /></p>
@@ -1193,11 +1236,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>DQL
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>isNotNull(content.request.creditCard.creditCardNumber)
+<div class="highlight"><pre><span></span><code><span class="n">isNotNull</span><span class="p">(</span><span class="n">content</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">creditCard</span><span class="p">.</span><span class="n">creditCardNumber</span><span class="p">)</span>
 </code></pre></div></p>
 <p>DQL processor definition:
-<div class="highlight"><pre><span></span><code>fieldsAdd maskedcreditcardnumber = hashMd5(content.request.creditCard.creditCardNumber)
-| fieldsRemove content.request.creditCard.creditCardNumber
+<div class="highlight"><pre><span></span><code><span class="n">fieldsAdd</span><span class="w"> </span><span class="n">maskedcreditcardnumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hashMd5</span><span class="p">(</span><span class="n">content</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">creditCard</span><span class="p">.</span><span class="n">creditCardNumber</span><span class="p">)</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsRemove</span><span class="w"> </span><span class="n">content</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">creditCard</span><span class="p">.</span><span class="n">creditCardNumber</span>
 </code></pre></div></p>
 <p>This processor rule will create a new field containing the MD5 hash value of the credit card number.  This is an example of masking sensitive data at ingest using OpenPipeline.</p>
 <p><img alt="Mask Sensitive Data Processor" src="../img/configure-dynatrace_opp_mask_sensitive.png" /></p>
@@ -1209,12 +1252,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>DQL
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>isNotNull(log.raw_level) and loglevel != &quot;NONE&quot; and isNotNull(message) and isNotNull(json_content) and isNotNull(content)
+<div class="highlight"><pre><span></span><code><span class="n">isNotNull</span><span class="p">(</span><span class="n">log</span><span class="p">.</span><span class="n">raw_level</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">loglevel</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="ss">&quot;NONE&quot;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 </code></pre></div></p>
 <p>DQL processor definition:
-<div class="highlight"><pre><span></span><code>fieldsRemove &quot;content.dt.*&quot;, &quot;content.k8s.*&quot;, &quot;content.time&quot;,&quot;content.level&quot;, &quot;content.process.technology&quot;, &quot;content.hostname&quot;, &quot;content.pid&quot;
-| fieldsRemove &quot;content.request.creditCard.*&quot;
-| fieldsRemove json_content
+<div class="highlight"><pre><span></span><code><span class="n">fieldsRemove</span><span class="w"> </span><span class="ss">&quot;content.dt.*&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;content.k8s.*&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;content.time&quot;</span><span class="p">,</span><span class="ss">&quot;content.level&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;content.process.technology&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;content.hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;content.pid&quot;</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsRemove</span><span class="w"> </span><span class="ss">&quot;content.request.creditCard.*&quot;</span>
+<span class="o">|</span><span class="w"> </span><span class="n">fieldsRemove</span><span class="w"> </span><span class="n">json_content</span>
 </code></pre></div></p>
 <p>This processor rule will cleanup (remove) fields that are no longer needed.  Parsing the <code>content</code> field resulted in many unwanted fields prefixed with <code>content.*</code>.  Additionally, the payment request log records contain sensitive credit card data (spoofed of course).  This processor will remove those fields with sensitive data.  This is an example of masking or deleting sensitive data at ingest using OpenPipeline.</p>
 <p><img alt="Cleanup Fields Processor" src="../img/configure-dynatrace_opp_cleanup_fields.png" /></p>
@@ -1228,13 +1271,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>Business Event
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>matchesValue(content,&quot;Transaction complete.&quot;) and isNotNull(payment.amount) and isNotNull(payment.transactionid)
+<div class="highlight"><pre><span></span><code><span class="n">matchesValue</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="ss">&quot;Transaction complete.&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">payment</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">payment</span><span class="p">.</span><span class="n">transactionid</span><span class="p">)</span>
 </code></pre></div></p>
 <p>Event type:
-<div class="highlight"><pre><span></span><code>astroshop.paymentservice.transaction.complete
+<div class="highlight"><pre><span></span><code><span class="n">astroshop</span><span class="p">.</span><span class="n">paymentservice</span><span class="p">.</span><span class="k">transaction</span><span class="p">.</span><span class="n">complete</span>
 </code></pre></div></p>
 <p>Event provider:
-<div class="highlight"><pre><span></span><code>astroshop
+<div class="highlight"><pre><span></span><code><span class="n">astroshop</span>
 </code></pre></div></p>
 <p>Field extraction:
 <div class="highlight"><pre><span></span><code>Extract all fields
@@ -1249,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>Davis Event
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>matchesValue(status,&quot;WARN&quot;) and matchesValue(message,&quot;PaymentService Fail Feature Flag Enabled&quot;) and isNotNull(dt.entity.cloud_application)
+<div class="highlight"><pre><span></span><code><span class="n">matchesValue</span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="ss">&quot;WARN&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">matchesValue</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="ss">&quot;PaymentService Fail Feature Flag Enabled&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">dt</span><span class="p">.</span><span class="n">entity</span><span class="p">.</span><span class="n">cloud_application</span><span class="p">)</span>
 </code></pre></div></p>
 <p>Event name:
 <div class="highlight"><pre><span></span><code>PaymentService Fail Feature Flag Enabled
@@ -1304,10 +1347,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>Counter metric
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>matchesValue(status,&quot;WARN&quot;) and matchesValue(message,&quot;PaymentService Fail Feature Flag Enabled&quot;) and isNotNull(dt.entity.cloud_application)
+<div class="highlight"><pre><span></span><code><span class="n">matchesValue</span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="ss">&quot;WARN&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">matchesValue</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="ss">&quot;PaymentService Fail Feature Flag Enabled&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">isNotNull</span><span class="p">(</span><span class="n">dt</span><span class="p">.</span><span class="n">entity</span><span class="p">.</span><span class="n">cloud_application</span><span class="p">)</span>
 </code></pre></div></p>
 <p>Metric key:
-<div class="highlight"><pre><span></span><code>log.astroshop.paymentservice.failure
+<div class="highlight"><pre><span></span><code><span class="n">log</span><span class="p">.</span><span class="n">astroshop</span><span class="p">.</span><span class="n">paymentservice</span><span class="p">.</span><span class="n">failure</span>
 </code></pre></div></p>
 <p>Dimensions:</p>
 <table>
@@ -1347,7 +1390,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="highlight"><pre><span></span><code>AstroShop PaymentService
 </code></pre></div></p>
 <p>Matching condition:
-<div class="highlight"><pre><span></span><code>matchesValue(k8s.namespace.name,&quot;astroshop&quot;) and matchesValue(k8s.container.name,&quot;paymentservice&quot;)
+<div class="highlight"><pre><span></span><code><span class="n">matchesValue</span><span class="p">(</span><span class="n">k8s</span><span class="p">.</span><span class="n">namespace</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="ss">&quot;astroshop&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">matchesValue</span><span class="p">(</span><span class="n">k8s</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="ss">&quot;paymentservice&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p>Pipeline:
 <div class="highlight"><pre><span></span><code>AstroShop PaymentService
@@ -1359,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Allow the <code>paymentservice</code> from <code>astroshop</code> to generate new log data that will be routed through the new pipeline (3-5 minutes).</p>
 <h3 id="query-logs_2">Query Logs<a class="headerlink" href="#query-logs_2" title="Permanent link">#</a></h3>
 <p>Return to the <code>Logs</code> app and filter on the logs generated by the payment service.</p>
-<div class="highlight"><pre><span></span><code>k8s.namespace.name = &quot;astroshop&quot; k8s.container.name = &quot;paymentservice&quot; 
+<div class="highlight"><pre><span></span><code><span class="n">k8s</span><span class="p">.</span><span class="n">namespace</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;astroshop&quot;</span><span class="w"> </span><span class="n">k8s</span><span class="p">.</span><span class="n">container</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;paymentservice&quot;</span><span class="w"> </span>
 </code></pre></div>
 <p><img alt="PaymentService Logs" src="../img/configure-dynatrace_opp_query_new_logs.png" /></p>
 <h2 id="continue">Continue<a class="headerlink" href="#continue" title="Permanent link">#</a></h2>

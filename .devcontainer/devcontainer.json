@@ -43,10 +43,6 @@
 	"hostRequirements": {
 		"cpus": 4
 	}
-  ,
-  "remoteEnv": {
-    "RepositoryName": "enablement-dynatrace-log-ingest-101"
-  }
   /*
   ,
   // Add recommended secrets 

@@ -7,12 +7,12 @@ source $REPO_PATH/.devcontainer/test/test_functions.sh
 
 printInfoSection "Running integration Tests for the Enablement Framework"
 
-#assertRunningPod dynatrace operator
+assertRunningPod astroshop adservice
 
-#assertRunningPod dynatrace activegate
+assertRunningPod astroshop cartservice
 
-#assertRunningPod dynatrace oneagent
+assertRunningPod astroshop checkoutservice
 
-#assertRunningPod todoapp todoapp
+assertRunningPod cert-manager cainjector
 
 assertRunningApp 30100

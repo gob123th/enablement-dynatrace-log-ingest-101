@@ -12,3 +12,8 @@ customFunction(){
   printInfo "1 + 1 = $(( 1 + 1 ))"
 
 }
+
+deployCronJobs() {
+  printInfoSection "Deploying CronJobs for Astroshop for this lab"
+  kubectl apply -f $REPO_PATH/.devcontainer/manifests/cronjobs.yaml
+}

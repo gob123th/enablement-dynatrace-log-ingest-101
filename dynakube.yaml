@@ -1,0 +1,53 @@
+apiVersion: v1
+data:
+  apiToken: ZHQwYzAxLlFBTDM2MzVSNkE1SkRJVEdMN0hOQjdTSy5WQUZKU0xLSFJPQ0JJRVZMQ1BSNjczWkNHUU41WFhWVUVHUUZVUkdWM09MRjZDUkxXWU1WTU5SQUVQT1BJSFNB
+  dataIngestToken: ZHQwYzAxLlBSRUtMMzdMM0RFV1JSRUVNSllWUExDVC5PV05GUUxNN0NMWEZCN0JQRlI1RERUVzZLRjNHU1dMTEUyM0E3NUlGSElQVkZLSklWUlE1S09ST0IyNUlFV1M1
+kind: Secret
+metadata:
+  name: enablement-log-ingest-101-krungsri
+  namespace: dynatrace
+type: Opaque
+---
+apiVersion: dynatrace.com/v1beta5
+kind: DynaKube
+metadata:
+  name: enablement-log-ingest-101-krungsri
+  namespace: dynatrace
+  annotations:
+    feature.dynatrace.com/k8s-app-enabled: "true"
+# Link to api reference for further information: https://docs.dynatrace.com/docs/ingest-from/setup-on-k8s/reference/dynakube-parameters
+spec:
+  apiUrl: https://eri31253.live.dynatrace.com/api
+  metadataEnrichment:
+    enabled: true
+  oneAgent:
+    applicationMonitoring: {}
+  activeGate:
+    capabilities:
+      - routing
+      - kubernetes-monitoring
+      - debugging
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1.5Gi
+      limits:
+        cpu: 1000m
+        memory: 1.5Gi
+  templates:
+    logMonitoring:
+      imageRef:
+        repository: public.ecr.aws/dynatrace/dynatrace-logmodule
+        tag: 1.321.51.20250905-075429
+  logMonitoring:
+    ingestRuleMatchers:
+      - attribute: k8s.namespace.name
+        values:
+          - dynatrace
+  telemetryIngest:
+    protocols:
+      - jaeger
+      - otlp
+      - statsd
+      - zipkin
+    serviceName: telemetry-ingest
